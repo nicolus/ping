@@ -26,9 +26,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies
+    - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
+      
+    - name: Install NPM dependencies
+      run: npm install
 
+    - name: Run Laravel Mix
+      run: npm run production
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
