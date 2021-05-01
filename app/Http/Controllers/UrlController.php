@@ -16,10 +16,6 @@ class UrlController extends Controller
     {
         $urls = auth()->user()->urls()->get();
 
-        foreach ($urls as $url) {
-            \Log::info($url->latestCheck->status);
-        }
-
         return response()->view('urls.index', [
             'urls' => $urls
         ]);
@@ -39,11 +35,20 @@ class UrlController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'url' => 'url'
+        ]);
+
+        auth()->user()->urls()->create([
+            'url'  => $request->input('url'),
+            'name' => $request->input('name')
+        ])->makeCheck();
+
+        return redirect()->back();
     }
 
     /**
