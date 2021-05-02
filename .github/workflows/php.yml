@@ -48,7 +48,7 @@ jobs:
     - name: rsync deployment
       uses: burnett01/rsync-deployments@4.1
       with:
-        switches: -avzr --delete --exclude '.env' 'node_modules/' 'storage/' 'bootstrap/cache/'
+        switches: -avzr --delete --exclude=".env" --exclude="node_modules/" --exclude="storage/" --exclude="bootstrap/cache/" --exclude=".git"
         path: /
         remote_path: /var/www/ping/
         remote_host: nicolus.fr
