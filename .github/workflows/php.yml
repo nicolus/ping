@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
 
@@ -27,20 +25,35 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install Composer dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --prefer-dist --no-progress --no-suggest --no-dev --optimize-autoloader
+      
+    - name: Cache NPM packages
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
       
     - name: Install NPM dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run Laravel Mix
       run: npm run production
       
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v2
+    - name: rsync deployment
+      uses: burnett01/rsync-deployments@4.1
       with:
-        name: dist
-        path: |
-          ./
+        switches: -avzr --delete --exclude=".env" --exclude="node_modules/" --exclude="storage/" --exclude="bootstrap/cache/" --exclude=".git"
+        path: /
+        remote_path: /var/www/ping/
+        remote_host: nicolus.fr
+        remote_user: ubuntu
+        remote_key: ${{ secrets.DEPLOY_KEY }}
       
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
