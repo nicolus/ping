@@ -27,6 +27,14 @@ jobs:
     - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress --no-suggest --no-dev --optimize-autoloader
       
+    - name: Cache NPM packages
+      id: npm-cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: npm-
+      
     - name: Install NPM dependencies
       run: npm install
 
@@ -36,7 +44,7 @@ jobs:
     - name: rsync deployment
       uses: burnett01/rsync-deployments@4.1
       with:
-        switches: -avzr --delete
+        switches: -avzr --delete --exclude node_modules
         path: /
         remote_path: /var/www/ping/
         remote_host: nicolus.fr
