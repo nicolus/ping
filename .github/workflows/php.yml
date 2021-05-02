@@ -31,12 +31,16 @@ jobs:
       id: npm-cache
       uses: actions/cache@v2
       with:
-        path: node_modules
-        key: npm-${{ hashFiles('package-lock.json') }}
-        restore-keys: npm-
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
       
     - name: Install NPM dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run Laravel Mix
       run: npm run production
