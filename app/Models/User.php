@@ -43,7 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     public function urls(): HasMany
     {
         return $this->hasMany(Url::class);

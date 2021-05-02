@@ -40,6 +40,7 @@ class Url extends Model
      */
     public function makeCheck(): Check
     {
+        \Log::info("Checking {$this->url}");
         try {
             $response = Http::get($this->url);
             return $this->checks()->create(['status' => $response->status()]);
