@@ -19,5 +19,3 @@ Route::redirect('/', 'login');
 Route::group(['middleware' => 'auth'], function() {
     Route::resource('/urls', UrlController::class);
 });
-
-require __DIR__.'/auth.php';

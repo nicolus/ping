@@ -45,11 +45,9 @@ return [
             'auth_mode' => null,
         ],
 
-
         'sendinblue' => [
             'transport' => 'sendinblue',
         ],
-
 
         'ses' => [
             'transport' => 'ses',
