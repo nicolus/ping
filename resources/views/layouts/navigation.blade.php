@@ -31,6 +31,7 @@
                                 @csrf
                                 <button class="dropdown-item px-4" type="submit">@lang('Logout')</button>
                             </form>
+                            <a class="dropdown-item px-4" href="{{ route('settings') }}">@lang('Settings')</a>
                         </x-slot>
                     </x-dropdown>
                 @endauth

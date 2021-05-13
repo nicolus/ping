@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +48,17 @@ class User extends Authenticatable
     public function urls(): HasMany
     {
         return $this->hasMany(Url::class);
+    }
+
+    public function confirmTwoFactorAuth($code)
+    {
+        $codeIsValid = app(TwoFactorAuthenticationProvider::class)
+            ->verify(decrypt($this->two_factor_secret), $code);
+
+        if ($codeIsValid) {
+            $this->two_factor_confirmed = true;
+            $this->save();
+        }
     }
 
     /**

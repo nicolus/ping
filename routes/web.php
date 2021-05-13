@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UrlController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,7 @@ Route::redirect('/', 'login');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::resource('/urls', UrlController::class);
+
+    Route::get('/settings', [UserController::class, 'edit'])->name('settings');
+    Route::post('/settings', [UserController::class, 'update'])->name('settings.update');
 });

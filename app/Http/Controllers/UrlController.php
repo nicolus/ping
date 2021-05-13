@@ -12,12 +12,13 @@ class UrlController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $urls = auth()->user()->urls()->get();
 
         return response()->view('urls.index', [
-            'urls' => $urls
+            'urls' => $urls,
+            'svg' => $svg ?? null
         ]);
     }
 
