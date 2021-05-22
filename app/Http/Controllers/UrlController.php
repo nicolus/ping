@@ -14,23 +14,11 @@ class UrlController extends Controller
      */
     public function index(Request $request)
     {
-        $urls = auth()->user()->urls()->get();
+        $urls = auth()->user()->urls()->with('latestCheck')->get();
 
-        return response()->view('urls.index', [
-            'urls' => $urls,
-            'svg' => $svg ?? null
-        ]);
+        return response()->view('urls.index', ['urls' => $urls]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -59,29 +47,6 @@ class UrlController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Url $url)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Url  $url
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Url $url)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Url  $url
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Url $url)
     {
         //
     }

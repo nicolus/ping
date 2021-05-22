@@ -32,7 +32,7 @@ class Url extends Model
 
     public function latestCheck(): HasOne
     {
-        return $this->hasOne(Check::class)->latest('id');
+        return $this->hasOne(Check::class)->latestOfMany();
     }
 
     /**
