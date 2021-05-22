@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)
+        User::factory(2)
             ->has(
                 Url::factory()
-                    ->count(10)
+                    ->count(5)
                     ->state(
                         new Sequence(
                             ['url' => 'https://gooddomain.com'],
                             ['url' => 'https://baddomain.com'],
                         )
                     )
-                    //->has(Check::factory()->count(1000))
+                    ->has(Check::factory()->count(100))
             )
             ->create();
     }
