@@ -26,6 +26,9 @@ jobs:
 
     - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress --no-suggest --no-dev --optimize-autoloader
+
+    - name: Publish vendor assets
+      run: php artisan horizon:publish
       
     - name: Cache NPM packages
       id: npm-cache
@@ -64,7 +67,8 @@ jobs:
         port: 22
         script: |
           cd /var/www/ping
-          php artisan optimize:clear
+          php artisan optimize
+          php artisan storage:link
           php artisan horizon:terminate
       
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
