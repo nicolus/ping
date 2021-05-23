@@ -15,7 +15,7 @@ class CreateChecksTable extends Migration
     {
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('url_id');
+            $table->foreignId('url_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->smallInteger('status');
             $table->timestamp('created_at')->nullable();;
         });
