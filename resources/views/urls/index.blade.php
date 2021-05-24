@@ -13,14 +13,27 @@
                     <th scope="col">Name</th>
                     <th scope="col">URL</th>
                     <th scope="col">Status</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($urls as $url)
                     <tr>
-                        <td>{{ $url->name }}</td>
-                        <td>{{ $url->url }}</td>
-                        <td><i class="bi bi-check-circle-fill"></i>{{ $url->latestCheck?->status }}</td>
+                        <td class="align-middle">{{ $url->name }}</td>
+                        <td class="align-middle">{{ $url->url }}</td>
+                        <td class="align-middle">
+                            @if($url->latestCheck?->status < 300)
+                                <i class="bi-check-circle-fill text-success"></i>
+                            @else
+                                <i class="bi-x-circle-fill text-danger"></i>
+                            @endif
+                            <span class="text-muted">{{ $url->latestCheck->status }}</span></td>
+                        <td class="align-middle"><form action="{{ route('urls.destroy', $url->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm display-on-row-hover" title="Delete"><i class="bi bi-trash-fill"></i></button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

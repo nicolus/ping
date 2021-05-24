@@ -20,3 +20,13 @@
 .flex-1 {
   flex: 1 1 0;
 }
+
+.display-on-row-hover {
+  opacity: 0;
+  transition:opacity 500ms;
+}
+
+tr:hover .display-on-row-hover {
+  opacity: 1;
+  transition:opacity 250ms;
+}

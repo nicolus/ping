@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UrlController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index(Request $request)
+    public function index(): Response
     {
         $urls = auth()->user()->urls()->with('latestCheck')->get();
 
@@ -23,10 +25,10 @@ class UrlController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'url' => 'url'
@@ -43,8 +45,8 @@ class UrlController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Url  $url
-     * @return \Illuminate\Http\Response
+     * @param Url $url
+     * @return Response
      */
     public function show(Url $url)
     {
@@ -54,11 +56,12 @@ class UrlController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Url  $url
-     * @return \Illuminate\Http\Response
+     * @param Url $url
+     * @return RedirectResponse
      */
-    public function destroy(Url $url)
+    public function destroy(Url $url): RedirectResponse
     {
-        //
+        $url->delete();
+        return redirect()->back();
     }
 }
