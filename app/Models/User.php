@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,9 +12,9 @@ use Illuminate\Notifications\Notification;
 use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailInterface
 {
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, MustVerifyEmail;
 
     /**
      * The attributes that are mass assignable.

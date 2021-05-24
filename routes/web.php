@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'login');
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::resource('/urls', UrlController::class);
 
     Route::get('/settings', [UserController::class, 'edit'])->name('settings');
