@@ -17,7 +17,9 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased bg-light">
-        @include('layouts.navigation')
+        @auth()
+            @include('layouts.navigation')
+        @endauth
 
         <!-- Page Content -->
         <main class="container my-5">
