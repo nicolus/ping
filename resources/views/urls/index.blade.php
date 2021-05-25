@@ -13,6 +13,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">URL</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Time</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -29,11 +30,14 @@
                             @endif
                             <span class="text-muted">{{ $url->latestCheck?->status }}</span>
                         </td>
+                        <td>{{$url->latestCheck?->time ? $url->latestCheck?->time .'ms' : ''}}</td>
                         <td class="align-middle">
-                            <form action="{{ route('urls.destroy', $url->id) }}" method="POST">
+                            <form class="d-inline" action="{{ route('urls.destroy', $url->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger btn-sm display-on-row-hover" title="Delete"><i class="bi bi-trash-fill"></i></button>
+                                <button class="btn btn-danger btn-sm display-on-row-hover" title="Delete">
+                                    <i class="bi-trash-fill"></i>
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -53,5 +57,4 @@
             <button class="btn btn-primary" id="basic-addon2">+ Add</button>
         </div>
     </form>
-
 </x-app-layout>
