@@ -18,7 +18,7 @@ class Up extends Notification
      *
      * @param Check $check The Check that triggered this notification
      */
-    public function __construct(public Check $check)
+    public function __construct(public Check $check, public Check $previousGoodCheck)
     {
 
     }
@@ -31,7 +31,11 @@ class Up extends Notification
      */
     public function via(mixed $notifiable)
     {
-        return ['mail', 'nexmo'];
+        if ($notifiable->routeNotificationForNexmo($this)) {
+            return ['mail', 'nexmo'];
+        } else {
+            return ['mail'];
+        }
     }
 
     /**
@@ -46,8 +50,8 @@ class Up extends Notification
             ->subject($this->check->url->name . ' is up !')
             ->greeting('Yay !')
             ->line("It looks like {$this->check->url->name} is now up.")
-            ->action('See for yourself', $this->check->url->url);
-//            ->line("It was offline since ...");
+            ->action('See for yourself', $this->check->url->url)
+            ->line("It was offline since {$this->previousGoodCheck->created_at}");
     }
 
     /**

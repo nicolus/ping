@@ -35,6 +35,14 @@ class Url extends Model
         return $this->hasOne(Check::class)->latestOfMany();
     }
 
+    public function latestGoodCheck(): HasOne
+    {
+        return $this->hasOne(Check::class)->ofMany([
+            'id' => 'max',
+        ], function ($query) {
+            $query->where('status', '<', 300);
+        });
+    }
     /**
      * @return Model|Check
      */

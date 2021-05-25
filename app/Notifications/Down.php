@@ -31,7 +31,11 @@ class Down extends Notification
      */
     public function via(mixed $notifiable)
     {
-        return ['mail', 'nexmo'];
+        if ($notifiable->routeNotificationForNexmo($this)) {
+            return ['mail', 'nexmo'];
+        } else {
+            return ['mail'];
+        }
     }
 
     /**
@@ -66,7 +70,7 @@ class Down extends Notification
      * Get the array representation of the notification.
      *
      * @param mixed $notifiable
-     * @return arrayr
+     * @return array
      */
     public function toArray(mixed $notifiable): array
     {

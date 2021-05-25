@@ -34,7 +34,9 @@ class CheckUrl implements ShouldQueue
      */
     public function handle()
     {
-        $previousCheck = $this->url->checks()->latest('id')->first();
+        $previousCheck = $this->url->latestCheck()->first();
+        $previousGoodCheck = $this->url->latestGoodCheck()->first();
+
         $check = $this->url->makeCheck();
 
         if (!$previousCheck) {
@@ -46,7 +48,7 @@ class CheckUrl implements ShouldQueue
         }
 
         if ($previousCheck->wasOffline() && $check->wasOnline()){
-            $this->url->user->notify(new Up($check));
+            $this->url->user->notify(new Up($check, $previousGoodCheck));
         }
     }
 }

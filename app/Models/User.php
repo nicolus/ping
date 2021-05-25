@@ -70,6 +70,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      */
     public function routeNotificationForNexmo(Notification $notification): ?string
     {
-        return $this->phone_number;
+        return $this->phone_number ?? false;
     }
 }
