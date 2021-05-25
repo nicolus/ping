@@ -26,7 +26,6 @@
                 <!-- Password -->
                 <div class="mb-3">
                     <x-label for="password" :value="__('Password')" />
-
                     <x-input id="password" type="password"
                              name="password"
                              required autocomplete="current-password" />
@@ -59,4 +58,7 @@
             </form>
         </div>
     </x-auth-card>
+    <div class="text-center">
+        <a class="text-muted" href="{{route('register')}}">{{__("No account yet ? Create one.")}}</a>
+    </div>
 </x-app-layout>
