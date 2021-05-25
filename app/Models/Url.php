@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Http;
 
@@ -72,7 +73,7 @@ class Url extends Model
                 'status' => $response->status(),
                 'time' => $time ?? null
             ]);
-        } catch (HttpResponseException|ConnectionException) {
+        } catch (HttpResponseException|HttpClientException) {
             return $this->checks()->create([
                 'online' => false,
                 'status' => null,
