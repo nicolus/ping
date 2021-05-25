@@ -60,9 +60,8 @@ class Url extends Model
      */
     public function makeCheck(): Check
     {
-        \Log::info("Checking {$this->url}");
         try {
-            $response = Http::timeout(60)->get($this->url);
+            $response = Http::timeout(config('app.check_timeout'))->get($this->url);
 
             if (!empty($response->transferStats) && $response->transferStats->hasResponse()){
                 $time = round($response->transferStats->getTransferTime() * 1000);
