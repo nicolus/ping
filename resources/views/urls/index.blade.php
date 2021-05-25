@@ -22,13 +22,15 @@
                         <td class="align-middle">{{ $url->name }}</td>
                         <td class="align-middle">{{ $url->url }}</td>
                         <td class="align-middle">
-                            @if($url->latestCheck?->status < 300)
+                            @if($url->isOnline())
                                 <i class="bi-check-circle-fill text-success"></i>
                             @else
                                 <i class="bi-x-circle-fill text-danger"></i>
                             @endif
-                            <span class="text-muted">{{ $url->latestCheck->status }}</span></td>
-                        <td class="align-middle"><form action="{{ route('urls.destroy', $url->id) }}" method="POST">
+                            <span class="text-muted">{{ $url->latestCheck?->status }}</span>
+                        </td>
+                        <td class="align-middle">
+                            <form action="{{ route('urls.destroy', $url->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm display-on-row-hover" title="Delete"><i class="bi bi-trash-fill"></i></button>
@@ -40,7 +42,7 @@
             </table>
         </div>
     @else
-        <p>You don't have any URLs to monitor right now. You can add one below
+        <p>You don't have any URLs to monitor right now. You can add one below</p>
     @endif
 
     <form action="{{route('urls.store')}}" method="post">

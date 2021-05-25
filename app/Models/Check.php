@@ -14,11 +14,12 @@ class Check extends Model
     const UPDATED_AT = null;
 
     public $fillable = [
-        'status'
+        'status', 'time', 'online'
     ];
 
     protected $casts = [
         'status' => 'int',
+        'online' => 'bool'
     ];
 
     public function url(): BelongsTo
@@ -28,12 +29,11 @@ class Check extends Model
 
     public function wasOnline()
     {
-        return $this->status === 200;
+        return $this->online === true;
     }
 
     public function wasOffline()
     {
         return !$this->wasOnline();
     }
-
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Http;
 
@@ -40,9 +41,20 @@ class Url extends Model
         return $this->hasOne(Check::class)->ofMany([
             'id' => 'max',
         ], function ($query) {
-            $query->where('status', '<', 300);
+            $query->where('online', '=', 1);
         });
     }
+
+    public function isOnline(): bool
+    {
+        return $this->latestCheck->wasOnline();
+    }
+
+    public function isOffline(): bool
+    {
+        return !$this->isOnline();
+    }
+
     /**
      * @return Model|Check
      */
@@ -50,10 +62,22 @@ class Url extends Model
     {
         \Log::info("Checking {$this->url}");
         try {
-            $response = Http::get($this->url);
-            return $this->checks()->create(['status' => $response->status()]);
-        } catch (HttpResponseException) {
-            return $this->checks()->create(['status' => 0]);
+            $response = Http::timeout(60)->get($this->url);
+
+            if (!empty($response->transferStats) && $response->transferStats->hasResponse()){
+                $time = round($response->transferStats->getTransferTime() * 1000);
+            }
+
+            return $this->checks()->create([
+                'online' => $response->status() < 300,
+                'status' => $response->status(),
+                'time' => $time ?? null
+            ]);
+        } catch (HttpResponseException|ConnectionException) {
+            return $this->checks()->create([
+                'online' => false,
+                'status' => null,
+            ]);
         }
     }
 }

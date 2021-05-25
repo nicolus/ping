@@ -37,7 +37,6 @@ class UrlCheckTest extends TestCase
         $url = Url::where('url', 'https://baddomain.com')->first();
         $url->makeCheck();
 
-
         $this->assertDatabaseHas('checks', ['url_id' => $url->id, 'status' => 500]);
     }
 }
