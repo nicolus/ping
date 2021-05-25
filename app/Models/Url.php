@@ -48,6 +48,10 @@ class Url extends Model
 
     public function isOnline(): bool
     {
+        if ($this->latestCheck === null) {
+            return false;
+        }
+
         return $this->latestCheck->wasOnline();
     }
 
