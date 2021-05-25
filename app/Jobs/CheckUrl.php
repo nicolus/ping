@@ -13,7 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CheckUrl implements ShouldQueue
+class CheckUrl implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -24,6 +24,11 @@ class CheckUrl implements ShouldQueue
      */
     public function __construct(protected Url $url)
     {
+    }
+
+    public function uniqueId()
+    {
+        return $this->url->id;
     }
 
     /**
