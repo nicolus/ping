@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,7 +78,7 @@ class Url extends Model
                 'status' => $response->status(),
                 'time' => $time ?? null
             ]);
-        } catch (HttpResponseException|HttpClientException) {
+        } catch (HttpResponseException|HttpClientException|RequestException) {
             return $this->checks()->create([
                 'online' => false,
                 'status' => null,
