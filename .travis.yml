@@ -6,9 +6,9 @@ php:
 os: linux
 
 before_script:
-  - composer install
+  - composer install --no-ansi --no-interaction --no-progress --prefer-dist
   - cp .env.example .env
-  - chmod -R 777 storage bootstrap/cache
+  - chmod -R 777 ./storage ./bootstrap/cache
   - php artisan key:generate
 
 script:
