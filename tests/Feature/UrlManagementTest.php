@@ -14,6 +14,21 @@ class UrlManagementTest extends TestCase
 
     protected $seed = true;
 
+    public function test_user_cant_add_invalid_url()
+    {
+        Http::fake();
+
+        $this->actingAs(User::find(1));
+
+        $response = $this->post('/urls', [
+            'name' => 'myName',
+            'url' => 'not-an-url'
+        ]);
+
+        $this->assertDatabaseMissing('urls', ['url' => 'not-an-url']);
+        $response->assertSessionHasErrors();
+    }
+
     public function test_user_can_add_url()
     {
         Http::fake();

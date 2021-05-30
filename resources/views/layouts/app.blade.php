@@ -23,6 +23,9 @@
 
         <!-- Page Content -->
         <main class="container my-5">
+            @if(session('success'))
+                <div class="alert alert-success">{{session('success')}}</div>
+            @endif
             {{ $slot }}
         </main>
     </body>

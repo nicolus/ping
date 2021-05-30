@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUrlRequest;
 use App\Models\Url;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,21 +26,16 @@ class UrlController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreUrlRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreUrlRequest $request): RedirectResponse
     {
-        $request->validate([
-            'url' => 'url'
-        ]);
+        auth()->user()->urls()
+            ->create($request->validated())
+            ->makeCheck();
 
-        auth()->user()->urls()->create([
-            'url'  => $request->input('url'),
-            'name' => $request->input('name')
-        ])->makeCheck();
-
-        return redirect()->back();
+        return redirect()->back()->with('success', __('Url successfully added'));
     }
 
     /**

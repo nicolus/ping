@@ -46,10 +46,12 @@
             </table>
         </div>
     @else
-        <p>You don't have any URLs to monitor right now. You can add one below</p>
+        <p>{{ __("You don't have any URLs to monitor right now. You can add one below") }}</p>
     @endif
 
-    <form action="{{route('urls.store')}}" method="post">
+    <x-show-errors />
+
+    <form action="{{ route('urls.store') }}" method="post">
         @csrf()
         <div class="input-group mb-3">
             <input type="text" class="form-control" name="name" placeholder="Name" required>
