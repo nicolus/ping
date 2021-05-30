@@ -29,9 +29,9 @@
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button class="dropdown-item px-4" type="submit">@lang('Logout')</button>
+                                <button class="dropdown-item px-4" type="submit">{{ __('Logout') }}</button>
                             </form>
-                            <a class="dropdown-item px-4" href="{{ route('settings') }}">@lang('Settings')</a>
+                            <a class="dropdown-item px-4" href="{{ route('settings') }}">{{ __('Settings') }}</a>
                         </x-slot>
                     </x-dropdown>
                 @endauth
