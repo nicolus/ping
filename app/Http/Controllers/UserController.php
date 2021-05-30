@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\ConfirmTwoFactorAuthRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 
 class UserController extends Controller
 {
@@ -12,7 +13,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function edit(Request $request)
     {
@@ -24,17 +25,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function confirmTwoFactorAuth(ConfirmTwoFactorAuthRequest $request): RedirectResponse
     {
-        $user = $request->user();
-
-        if ($request->code) {
-            $user->confirmTwoFactorAuth($request->code);
+        if ($request->user()->confirmTwoFactorAuth($request->code)) {
+            return redirect()->back()
+                ->with('success', __('Two Factor Authentication enabled.'));
         }
 
-        return view('settings', [
-            'user' => $user,
-            'qrcode' => $user->two_factor_secret ? $user->twoFactorQrCodeSvg() : null,
-        ]);
+        return redirect()->back()
+            ->with('error', __('Invalid code, Two factor authentication was not enabled'));
     }
 }

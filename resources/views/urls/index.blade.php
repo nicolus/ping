@@ -49,8 +49,6 @@
         <p>{{ __("You don't have any URLs to monitor right now. You can add one below") }}</p>
     @endif
 
-    <x-show-errors />
-
     <form action="{{ route('urls.store') }}" method="post">
         @csrf()
         <div class="input-group mb-3">

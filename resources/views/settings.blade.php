@@ -38,9 +38,9 @@
                     @elseif(session('status') == 'two-factor-authentication-enabled')
                         <p>{{__('In order to activate 2FA, please scan the qrcode below in Google Authenticator or Duo
                             and below and enter the code that\'s displayed in the app')}}</p>
-                        <form action="" method="post">
+                        <form action="{{route('two-factor.confirm')}}" method="post">
                             @csrf
-                            <div class="text-center">{!! $qrcode !!}</div>
+                            <div class="text-center mb-3">{!! $qrcode !!}</div>
                                 <div class="input-group mb-3">
                                     <x-input type="text" name="code" id="code"></x-input>
                                     <x-button type="submit">

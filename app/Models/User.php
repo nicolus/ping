@@ -60,6 +60,8 @@ class User extends Authenticatable implements MustVerifyEmailInterface
             $this->two_factor_confirmed = true;
             $this->save();
         }
+
+        return $codeIsValid;
     }
 
     /**

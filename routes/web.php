@@ -22,4 +22,5 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::get('/settings', [UserController::class, 'edit'])->name('settings');
     Route::post('/settings', [UserController::class, 'update'])->name('settings.update');
+    Route::post('/user/two-factor-confirm', [UserController::class, 'confirmTwoFactorAuth'])->name('two-factor.confirm');
 });
