@@ -1,0 +1,20 @@
+POST {{url}}/api/sanctum/token
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email" : "niconico2@yopmail.com",
+  "password" : "password",
+  "device_name" : "my_phone"
+}
+
+> {% client.global.set("auth_token", response.body) %}
+
+###
+
+GET {{url}}/api/urls
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+
