@@ -71,4 +71,14 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     {
         return $this->phone_number ?? false;
     }
+
+    /**
+     * Route notifications for the Firebase Cloud Messenging channel.
+     * The fcm_token is set by the mobile app when the user first connects.
+     */
+    public function routeNotificationForFcm(): ?string
+    {
+        return $this->fcm_token;
+    }
+
 }

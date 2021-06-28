@@ -11,6 +11,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'phone_number' => ['nullable', 'string'],
+            'fcm_token' => ['nullable', 'string']
         ];
     }
 }

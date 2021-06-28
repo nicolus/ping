@@ -13,6 +13,8 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "hedii/laravel-gelf-logger": "^6.0",
+        "kreait/laravel-firebase": "^3.1",
+        "laravel-notification-channels/fcm": "~2.0",
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
         "laravel/horizon": "^5.7",

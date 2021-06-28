@@ -13,8 +13,17 @@ Accept: application/json
 ###
 
 GET {{url}}/api/urls
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+
+POST {{url}}/api/user
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
+{
+  "fcm_token" : "fake_fcm_token"
+}
 

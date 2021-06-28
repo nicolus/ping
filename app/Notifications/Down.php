@@ -4,10 +4,15 @@ namespace App\Notifications;
 
 use App\Models\Check;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\MailChannel;
+use Illuminate\Notifications\Channels\NexmoSmsChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Fcm\FcmChannel;
+use NotificationChannels\Fcm\FcmMessage;
+use NotificationChannels\Fcm\Resources\AndroidConfig;
+use NotificationChannels\Fcm\Resources\AndroidNotification;
 
 class Down extends Notification
 {
@@ -31,11 +36,17 @@ class Down extends Notification
      */
     public function via(mixed $notifiable)
     {
+        $channels = [MailChannel::class];
+
         if ($notifiable->routeNotificationForNexmo($this)) {
-            return ['mail', 'nexmo'];
-        } else {
-            return ['mail'];
+            $channels[] = NexmoSmsChannel::class;
         }
+
+        if ($notifiable->routeNotificationForFcm()) {
+            $channels[] = FcmChannel::class;
+        }
+
+        return $channels;
     }
 
     /**
@@ -52,6 +63,20 @@ class Down extends Notification
             ->line("It looks like {$this->check->url->name} is down.")
             ->action('See for yourself', $this->check->url->url)
             ->line('We\'ll let you know as soon as it goes back online.');
+    }
+
+
+    public function toFcm($notifiable)
+    {
+        return FcmMessage::create()
+            ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
+                ->setTitle('Site is down')
+                ->setBody($this->check->url->name . ' is down')
+            )
+            ->setAndroid(
+                AndroidConfig::create()
+                    ->setNotification(AndroidNotification::create()->setClickAction('FCM_PLUGIN_ACTIVITY'))
+            );
     }
 
     /**
