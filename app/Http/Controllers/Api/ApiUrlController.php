@@ -16,4 +16,15 @@ class ApiUrlController extends Controller
     {
         return auth()->user()->urls()->with('latestCheck')->get();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function refresh()
+    {
+        auth()->user()->urls()->get()->each->makeCheck();
+        return auth()->user()->urls()->with('latestCheck')->get();
+    }
 }

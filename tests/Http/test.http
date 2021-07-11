@@ -27,3 +27,19 @@ Authorization: Bearer {{auth_token}}
   "fcm_token" : "fake_fcm_token"
 }
 
+
+###
+
+POST {{url}}/api/sanctum/token
+referer: http://localhost/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "niconico2@yopmail.com",
+  "password": "password",
+  "device_name": "my_device"
+}
+
+###
+

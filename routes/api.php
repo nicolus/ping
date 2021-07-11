@@ -21,6 +21,7 @@ Route::post('/sanctum/token', AuthenticateMobileApp::class);
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
   Route::get('/urls', [ApiUrlController::class, 'index']);
+  Route::get('/urls/refresh', [ApiUrlController::class, 'refresh']);
   Route::post('/user', [ApiUserController::class, 'update']);
 });
 

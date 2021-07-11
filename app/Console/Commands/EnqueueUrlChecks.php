@@ -31,6 +31,6 @@ class EnqueueUrlChecks extends Command
     {
         foreach (Url::all() as $uri) {
             CheckUrl::dispatch($uri);
-        };
+        }
     }
 }
