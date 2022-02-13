@@ -5,9 +5,9 @@ namespace App\Notifications;
 use App\Models\Check;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Channels\MailChannel;
-use Illuminate\Notifications\Channels\NexmoSmsChannel;
+use Illuminate\Notifications\Channels\VonageSmsChannel;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
@@ -38,8 +38,8 @@ class Down extends Notification
     {
         $channels = [MailChannel::class];
 
-        if ($notifiable->routeNotificationForNexmo($this)) {
-            $channels[] = NexmoSmsChannel::class;
+        if ($notifiable->routeNotificationForVonage($this)) {
+            $channels[] = VonageSmsChannel::class;
         }
 
         if ($notifiable->routeNotificationForFcm()) {
@@ -83,11 +83,11 @@ class Down extends Notification
      * Get the SMS representation of the notification.
      *
      * @param mixed $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo(mixed $notifiable): NexmoMessage
+    public function toVonage(mixed $notifiable): VonageMessage
     {
-        return (new NexmoMessage())
+        return (new VonageMessage())
             ->content($this->check->url->name . ' is down.');
     }
 

@@ -12,7 +12,7 @@ class ApiUrlController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return auth()->user()->urls()->with('latestCheck')->get();
     }
@@ -22,7 +22,7 @@ class ApiUrlController extends Controller
      *
      * @return Response
      */
-    public function refresh()
+    public function refresh(): Response
     {
         auth()->user()->urls()->get()->each->makeCheck();
         return auth()->user()->urls()->with('latestCheck')->get();

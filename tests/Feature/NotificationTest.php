@@ -44,8 +44,8 @@ class NotificationTest extends TestCase
         CheckUrl::dispatch($url);
 
         Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
-            return Str::contains($event->message->getBody(), 'is now up')
-                && Str::contains($event->message->getBody(), 'It was offline since 2021-05-05 13:37');
+            return Str::contains($event->message->getHtmlBody(), 'is now up')
+                && Str::contains($event->message->getHtmlBody(), 'It was offline since 2021-05-05 13:37');
         });
     }
 
@@ -68,7 +68,7 @@ class NotificationTest extends TestCase
         CheckUrl::dispatch($url);
 
         Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
-            return Str::contains($event->message->getBody(), 'is down');
+            return Str::contains($event->message->getHtmlBody(), 'is down');
         });
     }
 }
