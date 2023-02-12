@@ -13,7 +13,6 @@
                     <form action="" method="post">
                         @csrf
                         <div class="form-group">
-                            {{auth()->user()->getAuthPassword()}}
                             <x-input-label name="email" type="email" value="{{$user->email}}" disabled>E-mail :</x-input-label>
                             <x-input-label name="phone_number" type="tel" value="{{$user->phone_number}}">Phone number :</x-input-label>
                             <button class="btn btn-primary">Update</button>
