@@ -62,7 +62,7 @@ class Url extends Model
     }
 
     /**
-     * @return Model|Check
+     * @return Check
      */
     public function makeCheck(): Check
     {
@@ -78,7 +78,7 @@ class Url extends Model
                 'status' => $response->status(),
                 'time' => $time ?? null
             ]);
-        } catch (HttpResponseException|HttpClientException|RequestException) {
+        } catch (HttpResponseException|RequestException) {
             return $this->checks()->create([
                 'online' => false,
                 'status' => null,

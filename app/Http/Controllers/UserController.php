@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function confirmTwoFactorAuth(ConfirmTwoFactorAuthRequest $request): RedirectResponse
     {
-        if ($request->user()->confirmTwoFactorAuth($request->code)) {
+        if ($request->user()->confirmTwoFactorAuth($request->input('code'))) {
             return redirect()->back()
                 ->with('success', __('Two Factor Authentication enabled.'));
         }

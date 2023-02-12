@@ -34,10 +34,9 @@ class CheckUrl implements ShouldQueue, ShouldBeUnique
     /**
      * Execute the job.
      *
-     * @param Url $url
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $previousCheck = $this->url->latestCheck()->first();
         $previousGoodCheck = $this->url->latestGoodCheck()->first();

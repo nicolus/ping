@@ -29,7 +29,7 @@ class Up extends Notification
      * @param mixed $notifiable
      * @return array
      */
-    public function via(mixed $notifiable)
+    public function via(mixed $notifiable): array
     {
         if ($notifiable->routeNotificationForVonage($this)) {
             return ['mail', 'Vonage'];

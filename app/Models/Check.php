@@ -27,12 +27,12 @@ class Check extends Model
         return $this->belongsTo(Url::class);
     }
 
-    public function wasOnline()
+    public function wasOnline(): bool
     {
         return $this->online === true;
     }
 
-    public function wasOffline()
+    public function wasOffline(): bool
     {
         return !$this->wasOnline();
     }

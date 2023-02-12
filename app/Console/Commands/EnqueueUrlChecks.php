@@ -25,9 +25,8 @@ class EnqueueUrlChecks extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      */
-    public function handle()
+    public function handle(): void
     {
         foreach (Url::all() as $uri) {
             CheckUrl::dispatch($uri);
