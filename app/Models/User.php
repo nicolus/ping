@@ -62,12 +62,12 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     }
 
     /**
-     * Route notifications for the Nexmo channel.
+     * Route notifications for the Vonage channel.
      *
      * @param Notification $notification
      * @return ?string
      */
-    public function routeNotificationForNexmo(Notification $notification): ?string
+    public function routeNotificationForVonage(Notification $notification): ?string
     {
         return $this->phone_number ?? false;
     }

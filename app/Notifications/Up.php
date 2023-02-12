@@ -6,7 +6,7 @@ use App\Models\Check;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\NexmoMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
 
 class Up extends Notification
@@ -31,11 +31,11 @@ class Up extends Notification
      */
     public function via(mixed $notifiable)
     {
-        if ($notifiable->routeNotificationForNexmo($this)) {
-            return ['mail', 'nexmo'];
-        } else {
-            return ['mail'];
+        if ($notifiable->routeNotificationForVonage($this)) {
+            return ['mail', 'Vonage'];
         }
+
+        return ['mail'];
     }
 
     /**
@@ -58,11 +58,11 @@ class Up extends Notification
      * Get the SMS representation of the notification.
      *
      * @param mixed $notifiable
-     * @return NexmoMessage
+     * @return VonageMessage
      */
-    public function toNexmo(mixed $notifiable): NexmoMessage
+    public function toVonage(mixed $notifiable): VonageMessage
     {
-        return (new NexmoMessage())
+        return (new VonageMessage())
             ->content($this->check->url->name . ' is up !');
     }
 

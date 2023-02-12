@@ -34,7 +34,7 @@
                             @method('delete')
                             <button class="btn btn-primary">Disable Two Factor Authentication</button>
                         </form>
-                    @elseif(session('status') == 'two-factor-authentication-enabled')
+                    @elseif(session('status') === 'two-factor-authentication-enabled')
                         <p>{{__('In order to activate 2FA, please scan the qrcode below in Google Authenticator or Duo
                             and below and enter the code that\'s displayed in the app')}}</p>
                         <form action="{{route('two-factor.confirm')}}" method="post">

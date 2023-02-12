@@ -21,7 +21,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(UpdateUserRequest $request): RedirectResponse
     {
         $request->user()->update($request->validated());
 

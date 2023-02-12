@@ -22,7 +22,8 @@
         "laravel/sanctum": "^3.2.1",
         "laravel/tinker": "^2.8",
         "vonage/vonage-laravel": "^1.0.1",
-        "webup/laravel-sendinblue": "^3.1"
+        "symfony/http-client": "^6.0",
+        "symfony/sendinblue-mailer": "^6.0"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.6.4",
