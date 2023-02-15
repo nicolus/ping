@@ -22,6 +22,11 @@ class Check extends Model
         'online' => 'bool'
     ];
 
+    public function scopeOffline($query)
+    {
+        $query->where('online', false);
+    }
+
     public function url(): BelongsTo
     {
         return $this->belongsTo(Url::class);
