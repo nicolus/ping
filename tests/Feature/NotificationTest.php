@@ -53,7 +53,9 @@ class NotificationTest extends TestCase
     {
         Event::fake([MessageSending::class]);
 
-        Http::fake(Http::response('failure', 500));
+        Http::fake([
+            Http::response('failure', 500)
+        ]);
 
         /** @var Url $url */
         $url = Url::find(1);
