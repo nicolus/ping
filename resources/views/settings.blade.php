@@ -25,10 +25,8 @@
             <div class="card">
                 <div class="card-body">
                 <h5 class="card-title">Two factor authentication :</h5>
-                    @if($qrcode && $user->two_factor_confirmed)
-                        <p>{{__('Two factor authentication is activated, you can add it to Google Authenticator or Duo
-                            by scanning the qrcode below')}}</p>
-                        <div class="text-center mb-4">{!! $qrcode !!}</div>
+                    @if($qrcode && $user->hasEnabledTwoFactorAuthentication())
+                        <p>{{__('Two factor authentication is activated !')}}</p>
                         <form action="/user/two-factor-authentication" method="post">
                             @csrf
                             @method('delete')

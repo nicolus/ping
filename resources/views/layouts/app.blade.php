@@ -31,11 +31,13 @@
                 <div class="alert alert-danger">{{session('error')}}</div>
             @endif
 
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    {{ implode(' ', $errors->all()) }}
-                </div>
-            @endif
+            @foreach ($errors->getBags() as $errorBag)
+                @if($errorBag->any())
+                    <div class="alert alert-danger">
+                        {{ implode(' ', $errorBag->all()) }}
+                    </div>
+                @endif
+            @endforeach
 
             {{ $slot }}
         </main>

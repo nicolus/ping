@@ -27,17 +27,5 @@ class UserController extends Controller
 
         return redirect()->back()
             ->with('success', __('Profile updated'));
-
-    }
-
-    public function confirmTwoFactorAuth(ConfirmTwoFactorAuthRequest $request): RedirectResponse
-    {
-        if ($request->user()->confirmTwoFactorAuth($request->input('code'))) {
-            return redirect()->back()
-                ->with('success', __('Two Factor Authentication enabled.'));
-        }
-
-        return redirect()->back()
-            ->with('error', __('Invalid code, Two factor authentication was not enabled'));
     }
 }
