@@ -9,7 +9,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['nullable', 'string'],
+            'phone_number' => ['nullable', 'phone'],
             'fcm_token' => ['nullable', 'string']
         ];
     }
