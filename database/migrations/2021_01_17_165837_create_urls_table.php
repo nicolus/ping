@@ -8,10 +8,8 @@ class CreateUrlsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
@@ -24,10 +22,8 @@ class CreateUrlsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('urls');
     }

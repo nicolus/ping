@@ -37,16 +37,15 @@ class UrlController extends Controller
         return redirect()->back()->with('success', __('Url successfully added'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Url $url
-     * @return Response
-     */
-    public function show(Url $url)
-    {
-        //
-    }
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param Url $url
+//     */
+//    public function show(Url $url)
+//    {
+//        //
+//    }
 
     /**
      * Remove the specified resource from storage.

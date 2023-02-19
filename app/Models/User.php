@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -20,14 +19,14 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -37,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -46,19 +45,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     public function urls(): HasMany
     {
         return $this->hasMany(Url::class);
-    }
-
-    public function confirmTwoFactorAuth($code)
-    {
-        $codeIsValid = app(TwoFactorAuthenticationProvider::class)
-            ->verify(decrypt($this->two_factor_secret), $code);
-
-        if ($codeIsValid) {
-            $this->two_factor_confirmed = true;
-            $this->save();
-        }
-
-        return $codeIsValid;
     }
 
     /**

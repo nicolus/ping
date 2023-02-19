@@ -59,4 +59,13 @@ class UrlManagementTest extends TestCase
         $this->assertEquals($urlCount - 1, $user->urls()->count());
         $response->assertRedirect();
     }
+
+    public function test_index_shows_url_list()
+    {
+        Http::fake();
+        $this->actingAs(User::find(1));
+
+        $this->get('/urls')
+            ->assertSee('gooddomain.com');
+    }
 }

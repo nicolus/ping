@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Check extends Model
 {
@@ -22,11 +22,18 @@ class Check extends Model
         'online' => 'bool'
     ];
 
-    public function scopeOffline($query)
+    /**
+     * @param Builder<Check> $query
+     * @return void
+     */
+    public function scopeOffline(Builder $query): void
     {
         $query->where('online', false);
     }
 
+    /**
+     * @return BelongsTo<Url, Check>
+     */
     public function url(): BelongsTo
     {
         return $this->belongsTo(Url::class);

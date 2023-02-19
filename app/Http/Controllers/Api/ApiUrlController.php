@@ -3,28 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 class ApiUrlController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index(): Response
+    public function index(): JsonResponse
     {
-        return auth()->user()->urls()->with('latestCheck')->get();
+        return response()->json(
+            auth()->user()->urls()->with('latestCheck')->get()
+        );
     }
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function refresh(): Response
+    public function refresh(): JsonResponse
     {
         auth()->user()->urls()->get()->each->makeCheck();
-        return auth()->user()->urls()->with('latestCheck')->get();
+        return response()->json(
+            auth()->user()->urls()->with('latestCheck')->get()
+        );
     }
 }

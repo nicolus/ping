@@ -23,12 +23,13 @@
         "symfony/sendinblue-mailer": "^6.0"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^2.0.0",
         "fakerphp/faker": "^1.9.1",
         "itsgoingd/clockwork": "^5.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.3.3"
+        "nunomaduro/larastan": "^2.0",
+        "phpunit/phpunit": "^9.3.3",
+        "spatie/laravel-ignition": "^2.0.0"
     },
     "config": {
         "optimize-autoloader": true,
