@@ -39,10 +39,10 @@
                             @csrf
                             <div class="text-center mb-3">{!! $qrcode !!}</div>
                                 <div class="input-group mb-3">
-                                    <x-input type="text" name="code" id="code"></x-input>
-                                    <x-button type="submit">
+                                    <input type="text" name="code" id="code" class="form-control" />
+                                    <button type="submit" class="btn btn-primary">
                                         {{ __('Send') }}
-                                    </x-button>
+                                    </button>
                                 </div>
                             </form>
                     @else

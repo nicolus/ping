@@ -11,29 +11,30 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
-                <x-nav-link href="{{ route('urls.index') }}" :active="request()->routeIs('urls.index')">
-                    {{ __('Dashboard') }}
-                </x-nav-link>
+                <li class="nav-item">
+                    <a @class(['nav-link', 'active' => request()->routeIs('urls.index')])>
+                        {{ __('Dashboard') }}
+                    </a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                 <!-- Settings Dropdown -->
                 @auth
-                    <x-dropdown id="settingsDropdown">
-                        <x-slot name="trigger">
+                    <li class="nav-item dropdown">
+                        <a id="settingsDropdown" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->name }}
-                        </x-slot>
+                        </a>
 
-                        <x-slot name="content">
-                            <!-- Authentication -->
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="settingsDropdown">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button class="dropdown-item px-4" type="submit">{{ __('Logout') }}</button>
                             </form>
                             <a class="dropdown-item px-4" href="{{ route('settings') }}">{{ __('Settings') }}</a>
-                        </x-slot>
-                    </x-dropdown>
+                        </div>
+                    </li>
                 @endauth
             </ul>
         </div>
