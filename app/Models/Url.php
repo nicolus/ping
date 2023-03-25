@@ -6,11 +6,8 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Http;
 
@@ -35,12 +32,12 @@ class Url extends Model
 
     public function latestCheck(): HasOne
     {
-        return $this->hasOne(Check::class)->latestOfMany();
+        return $this->checks()->one()->latestOfMany();
     }
 
     public function latestGoodCheck(): HasOne
     {
-        return $this->hasOne(Check::class)->ofMany([
+        return $this->checks()->one()->ofMany([
             'id' => 'max',
         ], function ($query) {
             $query->where('online', '=', 1);
