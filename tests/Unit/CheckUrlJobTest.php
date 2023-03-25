@@ -15,7 +15,7 @@ class CheckUrlJobTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $seed = true;
+    protected bool $seed = true;
 
     public function setUp(): void
     {
@@ -35,10 +35,10 @@ class CheckUrlJobTest extends TestCase
 
         $url = Url::where('url', 'https://gooddomain.com')->first();
 
-        CheckUrl::dispatch($url);
-        CheckUrl::dispatch($url);
+        CheckUrl::dispatch($url); // 200
+        CheckUrl::dispatch($url); // 200 still online => nothing happens
         Notification::assertNothingSent();
-        CheckUrl::dispatch($url);
+        CheckUrl::dispatch($url); // 500 => notify that site is down
         Notification::assertSentTo(
             [$url->user], Down::class
         );
@@ -59,11 +59,11 @@ class CheckUrlJobTest extends TestCase
 
         $url = Url::where('url', 'https://gooddomain.com')->first();
 
-        CheckUrl::dispatch($url);
+        CheckUrl::dispatch($url); // 200 => nothing happens
         Notification::assertNothingSent();
-        CheckUrl::dispatch($url);
-        CheckUrl::dispatch($url);
-        CheckUrl::dispatch($url);
+        CheckUrl::dispatch($url); // 400 => site is now offline
+        CheckUrl::dispatch($url); // 500
+        CheckUrl::dispatch($url); // 200 again => notify that site is up again
         Notification::assertSentTo(
             [$url->user], Up::class
         );

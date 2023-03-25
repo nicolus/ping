@@ -6,8 +6,7 @@
     </x-slot>
     @if($urls->isNotEmpty())
         <div class="card my-4">
-
-            <table class="table mb-0 table-striped">
+            <table class="table mb-0 table-striped table_borderless">
                 <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -20,7 +19,7 @@
                 <tbody>
                 @foreach($urls as $url)
                     <tr>
-                        <td class="align-middle">{{ $url->name }}</td>
+                        <td class="align-middle ps-3">{{ $url->name }}</td>
                         <td class="align-middle">{{ $url->url }}</td>
                         <td class="align-middle">
                             @if($url->isOnline())
@@ -31,14 +30,10 @@
                             <span class="text-muted">{{ $url->latestCheck?->status }}</span>
                         </td>
                         <td>{{$url->latestCheck?->time ? $url->latestCheck?->time .'ms' : ''}}</td>
-                        <td class="align-middle">
-                            <form class="d-inline" action="{{ route('urls.destroy', $url->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm display-on-row-hover" title="Delete">
-                                    <i class="bi-trash-fill"></i>
-                                </button>
-                            </form>
+                        <td class="align-middle text-end">
+                            <a class="btn btn-primary btn-sm display-on-row-hover" title="Edit">
+                                <i class="bi-pencil-fill"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach
@@ -51,6 +46,7 @@
 
     <form action="{{ route('urls.store') }}" method="post">
         @csrf()
+        <p> Add a new URL to monitor : </p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" name="name" placeholder="Name" required>
             <input type="text" class="form-control" name="url" placeholder="https://url-to-monitor.com" required>
