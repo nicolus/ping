@@ -14,7 +14,7 @@
             <form method="POST" action="{{ route('password.confirm') }}">
                 @csrf
                 <div class="mb-3">
-                    <x-input-label name="password" type="password" required autocomplete="current-password">{{__('Password')}}</x-input-label>
+                    <x-input-label name="password" required autocomplete="current-password" />
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">

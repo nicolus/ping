@@ -7,20 +7,18 @@
         </x-slot>
 
         <div class="card-body">
-            <!-- Session Status -->
-            <x-auth-session-status class="mb-3" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
                 <!-- Email Address -->
                 <div class="mb-3">
-                    <x-input-label name="email" type="email" :value="old('email')" required autofocus>{{__('Email')}}</x-input-label>
+                    <x-input-label name="email" required autofocus />
                 </div>
 
                 <!-- Password -->
                 <div class="mb-3">
-                    <x-input-label name="password" type="password" required autocomplete="current-password">{{__('Password')}}</x-input-label>
+                    <x-input-label name="password" autocomplete="current-password" required />
                 </div>
 
                 <!-- Remember Me -->

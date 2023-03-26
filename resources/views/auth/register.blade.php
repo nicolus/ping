@@ -13,22 +13,22 @@
 
                 <!-- Name -->
                 <div class="mb-3">
-                    <x-input-label name="name" type="text" :value="old('name')" required autofocus>{{__('Name')}}</x-input-label>
+                    <x-input-label name="name" required autofocus />
                 </div>
 
                 <!-- Email Address -->
                 <div class="mb-3">
-                    <x-input-label name="email" type="email" :value="old('email')" required>{{__('Email')}}</x-input-label>
+                    <x-input-label name="email" required />
                 </div>
 
                 <!-- Password -->
                 <div class="mb-3">
-                    <x-input-label name="password" type="password" required autocomplete="new-password">{{__('Password')}}</x-input-label>
+                    <x-input-label name="password" autocomplete="new-password" required />
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="mb-3">
-                    <x-input-label name="password_confirmation" type="password" required>{{__('Confirm Password')}}</x-input-label>
+                    <x-input-label name="password_confirmation" required />
                 </div>
                 <div class="mb-0">
                     <div class="d-flex justify-content-end align-items-baseline">

@@ -16,17 +16,17 @@
 
                 <!-- Email Address -->
                 <div class="mb-3">
-                    <x-input-label name="email" type="email" :value="old('email',  $request->email)" required autofocus>{{__('Email')}}</x-input-label>
+                    <x-input-label name="email" :value="old('email',  $request->email)" />
                 </div>
 
                 <!-- Password -->
                 <div class="mb-3">
-                    <x-input-label name="password" type="password" required autocomplete="new-password">{{__('Password')}}</x-input-label>
+                    <x-input-label name="password" required autocomplete="new-password" />
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="mb-3">
-                    <x-input-label name="password_confirmation" type="password" required>{{__('Confirm Password')}}</x-input-label>
+                    <x-input-label name="password_confirmation" required>{{ __('Confirm Password') }}</x-input-label>
                 </div>
 
                 <div class="mb-0">

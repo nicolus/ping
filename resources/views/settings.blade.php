@@ -13,8 +13,8 @@
                     <form action="" method="post">
                         @csrf
                         <div class="form-group">
-                            <x-input-label name="email" type="email" value="{{$user->email}}" disabled>E-mail :</x-input-label>
-                            <x-input-label name="phone_number" type="tel" value="{{$user->phone_number}}">Phone number :</x-input-label>
+                            <x-input-label name="email" value="{{ $user->email }}" disabled />
+                            <x-input-label name="phone_number" value="{{ $user->phone_number }}" />
                             <button class="btn btn-primary">Update</button>
                         </div>
                     </form>

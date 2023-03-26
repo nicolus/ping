@@ -12,13 +12,10 @@
             </div>
 
             <div class="card-body">
-                <!-- Session Status -->
-                <x-auth-session-status class="mb-3" :status="session('status')" />
-
                 <form method="POST" action="{{ route('password.email') }}">
                     @csrf
                     <div class="mb-3">
-                        <x-input-label name="email" type="email" :value="old('email')" required autofocus>{{__('Email')}}</x-input-label>
+                        <x-input-label name="email" required autofocus />
                     </div>
 
                     <div class="d-flex justify-content-end mt-4">
