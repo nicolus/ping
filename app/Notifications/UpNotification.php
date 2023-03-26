@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
 
-class Up extends Notification
+class UpNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -18,7 +18,7 @@ class Up extends Notification
      *
      * @param Check $check The Check that triggered this notification
      */
-    public function __construct(public Check $check, public Check $previousGoodCheck)
+    public function __construct(public Check $check)
     {
 
     }
@@ -51,7 +51,7 @@ class Up extends Notification
             ->greeting('Yay !')
             ->line("It looks like {$this->check->url->name} is now up.")
             ->action('See for yourself', $this->check->url->url)
-            ->line("It was offline since {$this->previousGoodCheck->created_at}");
+            ->line("It was offline since {$this->check->previousOnlineCheck()->created_at}");
     }
 
     /**
@@ -64,16 +64,5 @@ class Up extends Notification
     {
         return (new VonageMessage())
             ->content($this->check->url->name . ' is up !');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function toArray(mixed $notifiable): array
-    {
-        return [];
     }
 }

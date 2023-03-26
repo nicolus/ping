@@ -4,8 +4,9 @@ namespace Tests\Unit;
 
 use App\Jobs\CheckUrl;
 use App\Models\Url;
-use App\Notifications\Down;
-use App\Notifications\Up;
+use App\Notifications\CheckNotification;
+use App\Notifications\DownNotification;
+use App\Notifications\UpNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Http;
@@ -37,11 +38,9 @@ class CheckUrlJobTest extends TestCase
 
         CheckUrl::dispatch($url); // 200
         CheckUrl::dispatch($url); // 200 still online => nothing happens
-        Notification::assertNothingSent();
+        Notification::assertSentTo($url->user, CheckNotification::class);
         CheckUrl::dispatch($url); // 500 => notify that site is down
-        Notification::assertSentTo(
-            [$url->user], Down::class
-        );
+        Notification::assertSentTo($url->user, DownNotification::class);
     }
 
 
@@ -60,12 +59,10 @@ class CheckUrlJobTest extends TestCase
         $url = Url::where('url', 'https://gooddomain.com')->first();
 
         CheckUrl::dispatch($url); // 200 => nothing happens
-        Notification::assertNothingSent();
+        Notification::assertSentTo($url->user, CheckNotification::class);
         CheckUrl::dispatch($url); // 400 => site is now offline
         CheckUrl::dispatch($url); // 500
         CheckUrl::dispatch($url); // 200 again => notify that site is up again
-        Notification::assertSentTo(
-            [$url->user], Up::class
-        );
+        Notification::assertSentTo($url->user, UpNotification::class);
     }
 }

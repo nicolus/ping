@@ -4,8 +4,11 @@ namespace App\Notifications;
 
 use App\Models\Check;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Channels\VonageSmsChannel;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
@@ -14,7 +17,7 @@ use NotificationChannels\Fcm\FcmMessage;
 use NotificationChannels\Fcm\Resources\AndroidConfig;
 use NotificationChannels\Fcm\Resources\AndroidNotification;
 
-class Down extends Notification
+class DownNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -36,7 +39,7 @@ class Down extends Notification
      */
     public function via(mixed $notifiable): array
     {
-        $channels = [MailChannel::class];
+        $channels = [BroadcastChannel::class, MailChannel::class];
 
         if ($notifiable->routeNotificationForVonage($this)) {
             $channels[] = VonageSmsChannel::class;
@@ -65,6 +68,16 @@ class Down extends Notification
             ->line('We\'ll let you know as soon as it goes back online.');
     }
 
+    /**
+     * Get the broadcastable representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'check' => $this->check,
+        ]);
+    }
+
 
     public function toFcm($notifiable)
     {
@@ -88,18 +101,8 @@ class Down extends Notification
     public function toVonage(mixed $notifiable): VonageMessage
     {
         return (new VonageMessage())
-//            ->from('My App')
+            ->from(config('app.name'))
             ->content($this->check->url->name . ' is down.');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function toArray(mixed $notifiable): array
-    {
-        return [];
-    }
 }

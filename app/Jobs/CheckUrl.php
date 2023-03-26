@@ -2,10 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Events\UrlChecked;
 use App\Models\Url;
-use App\Notifications\Down;
-use App\Notifications\Up;
-use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,21 +36,8 @@ class CheckUrl implements ShouldQueue, ShouldBeUnique
      */
     public function handle(): void
     {
-        $previousCheck = $this->url->latestCheck()->first();
-        $previousGoodCheck = $this->url->latestGoodCheck()->first();
-
         $check = $this->url->makeCheck();
 
-        if (!$previousCheck) {
-            return;
-        }
-
-        if ($previousCheck->wasOnline() && $check->wasOffline()){
-            $this->url->user->notify(new Down($check));
-        }
-
-        if ($previousCheck->wasOffline() && $check->wasOnline()){
-            $this->url->user->notify(new Up($check, $previousGoodCheck));
-        }
+        UrlChecked::dispatch($check);
     }
 }

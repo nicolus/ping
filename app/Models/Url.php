@@ -35,15 +35,6 @@ class Url extends Model
         return $this->checks()->one()->latestOfMany();
     }
 
-    public function latestGoodCheck(): HasOne
-    {
-        return $this->checks()->one()->ofMany([
-            'id' => 'max',
-        ], function ($query) {
-            $query->where('online', '=', 1);
-        });
-    }
-
     public function isOnline(): bool
     {
         if ($this->latestCheck === null) {
