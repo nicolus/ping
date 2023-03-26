@@ -5,8 +5,8 @@
 @import 'variables';
 
 // Bootstrap
-@import "~bootstrap/scss/bootstrap";
-@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 //@each $breakpoint in map-keys($grid-breakpoints) {
 //  @include media-breakpoint-up($breakpoint) {
