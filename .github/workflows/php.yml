@@ -45,7 +45,7 @@ jobs:
       run: npm ci
 
     - name: Run Laravel Mix
-      run: npm run production
+      run: npm run build
       
     - name: rsync deployment
       uses: burnett01/rsync-deployments@4.1
