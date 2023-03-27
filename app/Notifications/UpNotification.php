@@ -5,9 +5,14 @@ namespace App\Notifications;
 use App\Models\Check;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\BroadcastChannel;
+use Illuminate\Notifications\Channels\MailChannel;
+use Illuminate\Notifications\Channels\VonageSmsChannel;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Fcm\FcmChannel;
 
 class UpNotification extends Notification implements ShouldQueue
 {
@@ -31,11 +36,17 @@ class UpNotification extends Notification implements ShouldQueue
      */
     public function via(mixed $notifiable): array
     {
+        $channels = [BroadcastChannel::class, MailChannel::class];
+
         if ($notifiable->routeNotificationForVonage($this)) {
-            return ['mail', 'Vonage'];
+            $channels[] = VonageSmsChannel::class;
         }
 
-        return ['mail'];
+        if ($notifiable->routeNotificationForFcm()) {
+            $channels[] = FcmChannel::class;
+        }
+
+        return $channels;
     }
 
     /**
@@ -64,5 +75,15 @@ class UpNotification extends Notification implements ShouldQueue
     {
         return (new VonageMessage())
             ->content($this->check->url->name . ' is up !');
+    }
+
+
+    public function toBroadCast(mixed $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'style' => 'success',
+            'title' => $this->check->url->name . " is online !",
+            'text' => "This website is responding again !",
+        ]);
     }
 }

@@ -26,5 +26,16 @@
             <x-alert-message />
             {{ $slot }}
         </main>
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index: 11">
+            <template id="toast-template">
+                <div id="toasty" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                    </div>
+                    <div class="toast-body"></div>
+                </div>
+            </template>
+        </div>
+
     </body>
 </html>

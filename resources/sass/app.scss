@@ -8,6 +8,9 @@
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
+// Sweet Alert :
+@import "sweetalert2/dist/sweetalert2.css";
+
 //@each $breakpoint in map-keys($grid-breakpoints) {
 //  @include media-breakpoint-up($breakpoint) {
 //    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);

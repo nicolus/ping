@@ -36,8 +36,11 @@ class CheckNotification extends Notification implements ShouldQueue
 
     public function toBroadCast(mixed $notifiable): BroadcastMessage
     {
+        $status = $this->check->online ? 'online' : 'offline';
         return new BroadcastMessage([
-            'check' => $this->check,
+            'style' => 'info',
+            'title' => $this->check->url->name . " checked",
+            'text' => "it is still $status and responded in " . $this->check->time . "ms",
         ]);
     }
 }

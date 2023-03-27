@@ -68,17 +68,6 @@ class DownNotification extends Notification implements ShouldQueue
             ->line('We\'ll let you know as soon as it goes back online.');
     }
 
-    /**
-     * Get the broadcastable representation of the notification.
-     */
-    public function toBroadcast(object $notifiable): BroadcastMessage
-    {
-        return new BroadcastMessage([
-            'check' => $this->check,
-        ]);
-    }
-
-
     public function toFcm($notifiable)
     {
         return FcmMessage::create()
@@ -103,6 +92,15 @@ class DownNotification extends Notification implements ShouldQueue
         return (new VonageMessage())
             ->from(config('app.name'))
             ->content($this->check->url->name . ' is down.');
+    }
+
+    public function toBroadCast(mixed $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'style' => 'danger',
+            'title' => $this->check->url->name . " is offline",
+            'text' => "This website is not responding anymore.",
+        ]);
     }
 
 }
