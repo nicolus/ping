@@ -42,11 +42,11 @@ class Check extends Model
     }
 
     /**
-     * @return BelongsTo<Url, Check>
+     * @return BelongsTo<Probe, Check>
      */
-    public function url(): BelongsTo
+    public function probe(): BelongsTo
     {
-        return $this->belongsTo(Url::class);
+        return $this->belongsTo(Probe::class);
     }
 
     /**
@@ -56,7 +56,7 @@ class Check extends Model
     {
         return self::latest('id')
             ->where('id', '<', $this->id)
-            ->where('url_id', '=', $this->url_id)
+            ->where('probe_id', '=', $this->probe_id)
             ->first();
     }
 
@@ -67,7 +67,7 @@ class Check extends Model
     {
         return self::latest('id')->online()
             ->where('id', '<', $this->id)
-            ->where('url_id', '=', $this->url_id)
+            ->where('probe_id', '=', $this->probe_id)
             ->first();
     }
 

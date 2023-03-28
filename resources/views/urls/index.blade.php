@@ -4,7 +4,7 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    @if($urls->isNotEmpty())
+    @if($probes->isNotEmpty())
         <div class="card shadow-sm my-4">
             <table class="table mb-0 table-striped table_borderless">
                 <thead>
@@ -17,21 +17,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($urls as $url)
+                @foreach($probes as $probe)
                     <tr>
-                        <td class="align-middle ps-3">{{ $url->name }}</td>
-                        <td class="align-middle">{{ $url->url }}</td>
+                        <td class="align-middle ps-3">{{ $probe->name }}</td>
+                        <td class="align-middle">{{ $probe->url }}</td>
                         <td class="align-middle">
-                            @if($url->isOnline())
+                            @if($probe->isOnline())
                                 <i class="bi-check-circle-fill text-success"></i>
                             @else
                                 <i class="bi-x-circle-fill text-danger"></i>
                             @endif
-                            <span class="text-muted">{{ $url->latestCheck?->status }}</span>
+                            <span class="text-muted">{{ $probe->latestCheck?->status }}</span>
                         </td>
-                        <td>{{$url->latestCheck?->time ? $url->latestCheck?->time .'ms' : ''}}</td>
+                        <td>{{$probe->latestCheck?->time ? $probe->latestCheck?->time .'ms' : ''}}</td>
                         <td class="align-middle text-end">
-                            <a href="{{route('urls.edit', $url)}}" class="btn btn-primary btn-sm display-on-row-hover" title="Edit">
+                            <a href="{{route('urls.edit', $probe)}}" class="btn btn-primary btn-sm display-on-row-hover" title="Edit">
                                 <i class="bi-pencil-fill"></i>
                             </a>
                         </td>
@@ -45,15 +45,15 @@
     @endif
     <div class="card shadow-sm p-2">
         <div class="card-body">
-    <form action="{{ route('urls.store') }}" method="post">
-        @csrf()
-        <p> Add a new URL to monitor : </p>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" name="name" placeholder="Name" required>
-            <input type="text" class="form-control" name="url" placeholder="https://url-to-monitor.com" required>
-            <button class="btn btn-primary" id="basic-addon2">+ Add</button>
-        </div>
-    </form>
+            <form action="{{ route('urls.store') }}" method="post">
+                @csrf()
+                <p> Add a new URL to monitor : </p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="name" placeholder="Name" required>
+                    <input type="text" class="form-control" name="url" placeholder="https://url-to-monitor.com" required>
+                    <button class="btn btn-primary" id="basic-addon2">+ Add</button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

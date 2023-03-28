@@ -39,7 +39,7 @@ class CheckNotification extends Notification implements ShouldQueue
         $status = $this->check->online ? 'online' : 'offline';
         return new BroadcastMessage([
             'style' => 'info',
-            'title' => $this->check->url->name . " checked",
+            'title' => $this->check->probe->name . " checked",
             'text' => "it is still $status and responded in " . $this->check->time . "ms",
         ]);
     }

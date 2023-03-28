@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
-class ApiUrlController extends Controller
+class ApiProbeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class ApiUrlController extends Controller
     public function index(): JsonResponse
     {
         return response()->json(
-            auth()->user()->urls()->with('latestCheck')->get()
+            auth()->user()->probes()->with('latestCheck')->get()
         );
     }
 
@@ -22,9 +22,9 @@ class ApiUrlController extends Controller
      */
     public function refresh(): JsonResponse
     {
-        auth()->user()->urls()->get()->each->makeCheck();
+        auth()->user()->probes()->get()->each->makeCheck();
         return response()->json(
-            auth()->user()->urls()->with('latestCheck')->get()
+            auth()->user()->probes()->with('latestCheck')->get()
         );
     }
 }

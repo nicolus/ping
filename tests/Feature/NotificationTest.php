@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\CheckUrl;
+use App\Jobs\CheckProbe;
 use App\Models\Check;
-use App\Models\Url;
+use App\Models\Probe;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Carbon;
@@ -25,8 +25,8 @@ class NotificationTest extends TestCase
 
         Http::fake();
 
-        /** @var Url $url */
-        $url = Url::find(1);
+        /** @var Probe $url */
+        $url = Probe::find(1);
 
         $goodCheck = new Check();
         $goodCheck->status = 200;
@@ -41,7 +41,7 @@ class NotificationTest extends TestCase
 
         $url->checks()->saveMany([$goodCheck, $badCheck]);
 
-        CheckUrl::dispatch($url);
+        CheckProbe::dispatch($url);
 
         Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
             return Str::contains($event->message->getHtmlBody(), 'is now up')
@@ -57,8 +57,8 @@ class NotificationTest extends TestCase
             Http::response('failure', 500)
         ]);
 
-        /** @var Url $url */
-        $url = Url::find(1);
+        /** @var Probe $url */
+        $url = Probe::find(1);
 
         $goodCheck = new Check();
         $goodCheck->status = 200;
@@ -67,7 +67,7 @@ class NotificationTest extends TestCase
 
         $url->checks()->save($goodCheck);
 
-        CheckUrl::dispatch($url);
+        CheckProbe::dispatch($url);
 
         Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
             return Str::contains($event->message->getHtmlBody(), 'is down');

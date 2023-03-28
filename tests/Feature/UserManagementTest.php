@@ -46,14 +46,14 @@ class UserManagementTest extends TestCase
         $user = User::find(1);
         $this->actingAs($user);
 
-        $urlCount = $user->urls()->count();
+        $urlCount = $user->probes()->count();
 
-        $response = $this->delete('/urls/1', [
+        $response = $this->delete('/probes/1', [
             'name' => 'myName',
             'url' => 'https://my-url.com'
         ]);
 
-        $this->assertEquals($urlCount - 1, $user->urls()->count());
+        $this->assertEquals($urlCount - 1, $user->probes()->count());
         $response->assertRedirect();
     }
 
@@ -61,7 +61,7 @@ class UserManagementTest extends TestCase
     {
         $this->actingAs(User::find(1));
 
-        $this->get('/urls')
+        $this->get('/probes')
             ->assertSee('gooddomain.com');
     }
 }

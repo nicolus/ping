@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Check;
-use App\Models\Url;
+use App\Models\Probe;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(1)
             ->has(
-                Url::factory()
+                Probe::factory()
                     ->count(2)
                     ->state(
                         new Sequence(

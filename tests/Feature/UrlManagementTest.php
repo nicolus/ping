@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Url;
+use App\Models\Probe;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -20,12 +20,12 @@ class UrlManagementTest extends TestCase
 
         $this->actingAs(User::find(1));
 
-        $response = $this->post('/urls', [
+        $response = $this->post('/probes', [
             'name' => 'myName',
             'url' => 'not-an-url'
         ]);
 
-        $this->assertDatabaseMissing('urls', ['url' => 'not-an-url']);
+        $this->assertDatabaseMissing('probes', ['url' => 'not-an-url']);
         $response->assertSessionHasErrors();
     }
 
@@ -35,12 +35,12 @@ class UrlManagementTest extends TestCase
 
         $this->actingAs(User::find(1));
 
-        $response = $this->post('/urls', [
+        $response = $this->post('/probes', [
             'name' => 'myName',
             'url' => 'https://my-url.com'
         ]);
 
-        $this->assertEquals('myName', Url::latest('id')->first()->name);
+        $this->assertEquals('myName', Probe::latest('id')->first()->name);
         $response->assertRedirect();
     }
 
@@ -49,14 +49,14 @@ class UrlManagementTest extends TestCase
         $user = User::find(1);
         $this->actingAs($user);
 
-        $urlCount = $user->urls()->count();
+        $urlCount = $user->probes()->count();
 
-        $response = $this->delete('/urls/1', [
+        $response = $this->delete('/probes/1', [
             'name' => 'myName',
             'url' => 'https://my-url.com'
         ]);
 
-        $this->assertEquals($urlCount - 1, $user->urls()->count());
+        $this->assertEquals($urlCount - 1, $user->probes()->count());
         $response->assertRedirect();
     }
 
@@ -65,7 +65,46 @@ class UrlManagementTest extends TestCase
         Http::fake();
         $this->actingAs(User::find(1));
 
-        $this->get('/urls')
+        $this->get('/probes')
             ->assertSee('gooddomain.com');
+    }
+
+    public function test_can_edit_url()
+    {
+        Http::fake();
+        $this->actingAs(User::find(1));
+
+        $this->get('/probes/1/edit')
+            ->assertSee('gooddomain.com');
+    }
+
+    public function test_can_update_url()
+    {
+        Http::fake();
+        $this->actingAs(User::find(1));
+
+        $this->put('/probes/1', [
+            'name' => 'UpdatedName',
+            'url' => 'https://gooddomain.com',
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('probes', ['name' => 'UpdatedName']);
+    }
+
+    public function test_cannot_update_url_from_other_user()
+    {
+        Http::fake();
+        $this->actingAs(User::find(1));
+
+        $otherUser = User::factory(1)->has(Probe::factory(1))->create()->first();
+        $otherUrl = $otherUser->probes()->first();
+
+        $this->get('/probes/1/edit')
+            ->assertStatus(403);
+
+        $this->put('/probes/' . $otherUrl->id , [
+            'name' => 'UpdatedName',
+            'url' => 'https://gooddomain.com',
+        ])->assertStatus(403);
     }
 }

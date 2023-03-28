@@ -13,7 +13,7 @@ class CreateChecksTable extends Migration
     {
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('url_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('probe_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('online');
             $table->smallInteger('status')->unsigned()->nullable();
             $table->smallInteger('time')->unsigned()->nullable();

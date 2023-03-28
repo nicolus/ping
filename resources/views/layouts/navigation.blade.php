@@ -12,7 +12,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a @class(['nav-link', 'active' => request()->routeIs('urls.index')])>
+                    <a @class(['nav-link', 'active' => request()->routeIs('probes.index')])>
                         {{ __('Dashboard') }}
                     </a>
                 </li>

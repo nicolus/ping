@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Models\Check;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class UrlChecked
+class ProbeChecked
 {
     use Dispatchable;
 

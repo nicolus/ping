@@ -58,10 +58,10 @@ class UpNotification extends Notification implements ShouldQueue
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject($this->check->url->name . ' is up !')
+            ->subject($this->check->probe->name . ' is up !')
             ->greeting('Yay !')
-            ->line("It looks like {$this->check->url->name} is now up.")
-            ->action('See for yourself', $this->check->url->url)
+            ->line("It looks like {$this->check->probe->name} is now up.")
+            ->action('See for yourself', $this->check->probe->url)
             ->line("It was offline since {$this->check->previousOnlineCheck()->created_at}");
     }
 
@@ -74,7 +74,7 @@ class UpNotification extends Notification implements ShouldQueue
     public function toVonage(mixed $notifiable): VonageMessage
     {
         return (new VonageMessage())
-            ->content($this->check->url->name . ' is up !');
+            ->content($this->check->probe->name . ' is up !');
     }
 
 
@@ -82,7 +82,7 @@ class UpNotification extends Notification implements ShouldQueue
     {
         return new BroadcastMessage([
             'style' => 'success',
-            'title' => $this->check->url->name . " is online !",
+            'title' => $this->check->probe->name . " is online !",
             'text' => "This website is responding again !",
         ]);
     }

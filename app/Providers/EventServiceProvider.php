@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\UrlChecked;
-use App\Listeners\UrlCheckedListener;
+use App\Events\ProbeChecked;
+use App\Listeners\ProbeCheckedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,8 +20,8 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        UrlChecked::class => [
-            UrlCheckedListener::class,
+        ProbeChecked::class => [
+            ProbeCheckedListener::class,
         ],
     ];
 

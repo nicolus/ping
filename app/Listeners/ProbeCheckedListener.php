@@ -2,18 +2,18 @@
 
 namespace App\Listeners;
 
-use App\Events\UrlChecked;
+use App\Events\ProbeChecked;
 use App\Notifications\CheckNotification;
 use App\Notifications\DownNotification;
 use App\Notifications\UpNotification;
 
-class UrlCheckedListener
+class ProbeCheckedListener
 {
     public function __construct()
     {
     }
 
-    public function handle(UrlChecked $event): void
+    public function handle(ProbeChecked $event): void
     {
         $check = $event->check;
         $previous = $check->previousCheck();
@@ -26,6 +26,6 @@ class UrlCheckedListener
             $notification = new CheckNotification($event->check);
         }
 
-        $event->check->url->user->notify($notification);
+        $event->check->probe->user->notify($notification);
     }
 }

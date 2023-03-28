@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Url;
+use App\Models\Probe;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -26,17 +26,17 @@ class UrlCheckTest extends TestCase
 
     public function testCheckGoodUri()
     {
-        $url = Url::where('url', 'https://gooddomain.com')->first();
+        $url = Probe::where('url', 'https://gooddomain.com')->first();
         $url->makeCheck();
 
-        $this->assertDatabaseHas('checks', ['url_id' => $url->id, 'status' => 200]);
+        $this->assertDatabaseHas('checks', ['probe_id' => $url->id, 'status' => 200]);
     }
 
     public function testCheckBadUri()
     {
-        $url = Url::where('url', 'https://baddomain.com')->first();
+        $url = Probe::where('url', 'https://baddomain.com')->first();
         $url->makeCheck();
 
-        $this->assertDatabaseHas('checks', ['url_id' => $url->id, 'status' => 500]);
+        $this->assertDatabaseHas('checks', ['probe_id' => $url->id, 'status' => 500]);
     }
 }

@@ -61,10 +61,10 @@ class DownNotification extends Notification implements ShouldQueue
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject($this->check->url->name . ' is down')
+            ->subject($this->check->probe->name . ' is down')
             ->greeting('Ooops')
-            ->line("It looks like {$this->check->url->name} is down.")
-            ->action('See for yourself', $this->check->url->url)
+            ->line("It looks like {$this->check->probe->name} is down.")
+            ->action('See for yourself', $this->check->probe->url)
             ->line('We\'ll let you know as soon as it goes back online.');
     }
 
@@ -73,7 +73,7 @@ class DownNotification extends Notification implements ShouldQueue
         return FcmMessage::create()
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
                 ->setTitle('Site is down')
-                ->setBody($this->check->url->name . ' is down')
+                ->setBody($this->check->probe->name . ' is down')
             )
             ->setAndroid(
                 AndroidConfig::create()
@@ -91,14 +91,14 @@ class DownNotification extends Notification implements ShouldQueue
     {
         return (new VonageMessage())
             ->from(config('app.name'))
-            ->content($this->check->url->name . ' is down.');
+            ->content($this->check->probe->name . ' is down.');
     }
 
     public function toBroadCast(mixed $notifiable): BroadcastMessage
     {
         return new BroadcastMessage([
             'style' => 'danger',
-            'title' => $this->check->url->name . " is offline",
+            'title' => $this->check->probe->name . " is offline",
             'text' => "This website is not responding anymore.",
         ]);
     }

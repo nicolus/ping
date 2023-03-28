@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\CheckUrl;
-use App\Models\Url;
+use App\Jobs\CheckProbe;
+use App\Models\Probe;
 use Illuminate\Console\Command;
 
-class EnqueueUrlChecks extends Command
+class EnqueueProbeChecks extends Command
 {
     /**
      * The name and signature of the console command.
@@ -28,8 +28,8 @@ class EnqueueUrlChecks extends Command
      */
     public function handle(): void
     {
-        foreach (Url::all() as $uri) {
-            CheckUrl::dispatch($uri);
+        foreach (Probe::all() as $uri) {
+            CheckProbe::dispatch($uri);
         }
     }
 }

@@ -42,9 +42,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
         'email_verified_at' => 'datetime',
     ];
 
-    public function urls(): HasMany
+    public function probes(): HasMany
     {
-        return $this->hasMany(Url::class);
+        return $this->hasMany(Probe::class);
     }
 
     /**
