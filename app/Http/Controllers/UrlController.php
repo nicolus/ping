@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUrlRequest;
+use App\Http\Requests\updateUrlRequest;
 use App\Models\Url;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class UrlController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+
     public function index(): Response
     {
         $urls = auth()->user()->urls()->with('latestCheck')->get();
@@ -22,12 +19,6 @@ class UrlController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreUrlRequest $request
-     * @return RedirectResponse
-     */
     public function store(StoreUrlRequest $request): RedirectResponse
     {
         auth()->user()->urls()
@@ -37,15 +28,20 @@ class UrlController extends Controller
         return redirect()->back()->with('success', __('Url successfully added'));
     }
 
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param Url $url
-//     */
-//    public function show(Url $url)
-//    {
-//        //
-//    }
+    public function update(Url $url, StoreUrlRequest $request): RedirectResponse
+    {
+        $url->update($request->validated());
+
+        return redirect()->back()
+            ->with('success', __('Url successfully updated'));
+    }
+
+    public function edit(Url $url)
+    {
+        return view('urls.edit', [
+            'url' => $url,
+        ]);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -56,6 +52,7 @@ class UrlController extends Controller
     public function destroy(Url $url): RedirectResponse
     {
         $url->delete();
-        return redirect()->back();
+        return redirect()->route('urls.index')
+            ->with('success', __('Url successfully deleted'));
     }
 }

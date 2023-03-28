@@ -16,7 +16,7 @@
         <!-- Scripts -->
         @vite('resources/js/app.js')
     </head>
-    <body class="font-sans antialiased bg-light">
+    <body class="font-sans antialiased">
         @auth()
             @include('layouts.navigation')
         @endauth
