@@ -66,6 +66,7 @@ class UrlManagementTest extends TestCase
         $this->actingAs(User::find(1));
 
         $this->get('/probes')
+            ->assertStatus(200)
             ->assertSee('gooddomain.com');
     }
 
@@ -75,6 +76,7 @@ class UrlManagementTest extends TestCase
         $this->actingAs(User::find(1));
 
         $this->get('/probes/1/edit')
+            ->assertStatus(200)
             ->assertSee('gooddomain.com');
     }
 
@@ -97,12 +99,12 @@ class UrlManagementTest extends TestCase
         $this->actingAs(User::find(1));
 
         $otherUser = User::factory(1)->has(Probe::factory(1))->create()->first();
-        $otherUrl = $otherUser->probes()->first();
+        $otherProbe = $otherUser->probes()->first();
 
-        $this->get('/probes/1/edit')
+        $this->get('/probes/' . $otherProbe->id . '/edit')
             ->assertStatus(403);
 
-        $this->put('/probes/' . $otherUrl->id , [
+        $this->put('/probes/' . $otherProbe->id , [
             'name' => 'UpdatedName',
             'url' => 'https://gooddomain.com',
         ])->assertStatus(403);

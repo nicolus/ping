@@ -31,7 +31,7 @@
                         </td>
                         <td>{{$probe->latestCheck?->time ? $probe->latestCheck?->time .'ms' : ''}}</td>
                         <td class="align-middle text-end">
-                            <a href="{{route('urls.edit', $probe)}}" class="btn btn-primary btn-sm display-on-row-hover" title="Edit">
+                            <a href="{{route('probes.edit', $probe)}}" class="btn btn-primary btn-sm display-on-row-hover" title="Edit">
                                 <i class="bi-pencil-fill"></i>
                             </a>
                         </td>
@@ -41,11 +41,11 @@
             </table>
         </div>
     @else
-        <p>{{ __("You don't have any URLs to monitor right now. You can add one below") }}</p>
+        <p>{{ __("You don't have any Probes setup to monitor your services right now. You can add one below") }}</p>
     @endif
     <div class="card shadow-sm p-2">
         <div class="card-body">
-            <form action="{{ route('urls.store') }}" method="post">
+            <form action="{{ route('probes.store') }}" method="post">
                 @csrf()
                 <p> Add a new URL to monitor : </p>
                 <div class="input-group mb-3">

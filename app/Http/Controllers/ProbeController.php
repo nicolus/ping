@@ -10,6 +10,11 @@ use Illuminate\Http\Response;
 class ProbeController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->authorizeResource(Probe::class, 'probe');
+    }
+
     public function index(): Response
     {
         $probes = auth()->user()->probes()->with('latestCheck')->get();
@@ -37,7 +42,7 @@ class ProbeController extends Controller
 
     public function edit(Probe $probe)
     {
-        return view('urls.edit', [
+        return view('probes.edit', [
             'url' => $probe,
         ]);
     }
