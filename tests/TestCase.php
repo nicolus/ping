@@ -8,7 +8,14 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function setUp(): void
+    /**
+     * Indicates whether the default seeder should run before each test.
+     *
+     * @var bool
+     */
+    protected $seed = true;
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutVite();

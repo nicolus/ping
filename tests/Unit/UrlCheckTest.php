@@ -1,42 +1,28 @@
 <?php
 
-namespace Tests\Unit;
-
 use App\Models\Probe;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
-use Tests\TestCase;
 
-class UrlCheckTest extends TestCase
-{
-    use RefreshDatabase;
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    protected $seed = true;
+beforeEach(function () {
+    Http::fake([
+       'gooddomain.com' => Http::response(),
+       'baddomain.com' => Http::response(null, 500),
+   ]);
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('check good uri', function () {
+    $url = Probe::where('url', 'https://gooddomain.com')->first();
+    $url->makeCheck();
 
-        Http::fake([
-           'gooddomain.com' => Http::response(),
-           'baddomain.com' => Http::response(null, 500),
-       ]);
-    }
+    $this->assertDatabaseHas('checks', ['probe_id' => $url->id, 'status' => 200]);
+});
 
-    public function testCheckGoodUri()
-    {
-        $url = Probe::where('url', 'https://gooddomain.com')->first();
-        $url->makeCheck();
+test('check bad uri', function () {
+    $url = Probe::where('url', 'https://baddomain.com')->first();
+    $url->makeCheck();
 
-        $this->assertDatabaseHas('checks', ['probe_id' => $url->id, 'status' => 200]);
-    }
-
-    public function testCheckBadUri()
-    {
-        $url = Probe::where('url', 'https://baddomain.com')->first();
-        $url->makeCheck();
-
-        $this->assertDatabaseHas('checks', ['probe_id' => $url->id, 'status' => 500]);
-    }
-}
+    $this->assertDatabaseHas('checks', ['probe_id' => $url->id, 'status' => 500]);
+});
