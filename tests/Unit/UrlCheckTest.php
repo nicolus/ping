@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Probe;
-use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
