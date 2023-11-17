@@ -36,8 +36,6 @@ class CheckProbe implements ShouldQueue, ShouldBeUnique
      */
     public function handle(): void
     {
-        $check = $this->probe->makeCheck();
-
-        ProbeChecked::dispatch($check);
+        $this->probe->makeCheck();
     }
 }

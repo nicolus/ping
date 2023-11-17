@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ProbeChecked;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -49,10 +50,7 @@ class Probe extends Model
         return !$this->isOnline();
     }
 
-    /**
-     * @return Check
-     */
-    public function makeCheck(): Check
+    public function makeCheck(): void
     {
         try {
             $response = Http::timeout(config('app.check_timeout'))->get($this->url);
@@ -61,16 +59,18 @@ class Probe extends Model
                 $time = round($response->transferStats->getTransferTime() * 1000);
             }
 
-            return $this->checks()->create([
+            $check = $this->checks()->create([
                 'online' => $response->status() < 300,
                 'status' => $response->status(),
                 'time' => $time ?? null
             ]);
         } catch (HttpResponseException|RequestException) {
-            return $this->checks()->create([
+            $check = $this->checks()->create([
                 'online' => false,
                 'status' => null,
             ]);
         }
+
+        ProbeChecked::dispatch($check);
     }
 }
