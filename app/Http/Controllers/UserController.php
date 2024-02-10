@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ConfirmTwoFactorAuthRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
