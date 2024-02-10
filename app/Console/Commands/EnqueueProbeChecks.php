@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CheckProbe;
+use App\Models\Check;
 use App\Models\Probe;
 use Illuminate\Console\Command;
 

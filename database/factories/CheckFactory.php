@@ -22,8 +22,10 @@ class CheckFactory extends Factory
     public function definition(): array
     {
         $statuses = [200, 404, 403, 500];
+        $status = $statuses[rand(0, count($statuses) - 1)];
         return [
-            'status' => $statuses[rand(0, count($statuses) - 1)],
+            'status' => $status,
+            'online' => $status === 200,
         ];
     }
 

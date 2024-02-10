@@ -11,7 +11,6 @@ class ProbeChecked
 
     public function __construct(
         public Check $check,
-    )
-    {
+    ) {
     }
 }

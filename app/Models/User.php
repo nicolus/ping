@@ -55,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      */
     public function routeNotificationForVonage(Notification $notification): ?string
     {
-        return $this->phone_number ?? false;
+        return $this->phone_number;
     }
 
     /**
@@ -66,5 +66,4 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     {
         return $this->fcm_token;
     }
-
 }

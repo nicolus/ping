@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Check extends Model
 {
@@ -65,7 +64,20 @@ class Check extends Model
      */
     public function previousOnlineCheck(): ?self
     {
-        return self::latest('id')->online()
+        return self::latest('id')
+            ->online()
+            ->where('id', '<', $this->id)
+            ->where('probe_id', '=', $this->probe_id)
+            ->first();
+    }
+
+    /**
+     * @return ?self The latest check for the same URL that was "offline" before this one. null if it was never offline
+     **/
+    public function previousOfflineCheck(): ?self
+    {
+        return self::latest('id')
+            ->offline()
             ->where('id', '<', $this->id)
             ->where('probe_id', '=', $this->probe_id)
             ->first();

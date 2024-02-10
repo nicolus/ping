@@ -1,67 +1,58 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class UserManagementTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    protected bool $seed = true;
+test('can edit settings', function () {
+    $this->refreshDatabase();
+    $user = User::find(1);
+    $this->actingAs($user)
+        ->get('/settings')
+        ->assertSee("$user->email");
+});
 
-    public function test_can_edit_settings()
-    {
-        $user = User::find(1);
-        $this->actingAs($user)
-            ->get('/settings')
-            ->assertSee("$user->email");
-    }
+test('can update settings', function () {
+    $user = User::find(1);
 
-    public function test_can_update_settings()
-    {
-        $user = User::find(1);
+    $this->actingAs($user)
+        ->post('/settings', [
+            'phone_number' => '+3312'
+        ])->assertSessionHasErrors()
+        ->assertRedirect();
 
-        $this->actingAs($user)
-            ->post('/settings', [
-                'phone_number' => '+3312'
-            ])->assertSessionHasErrors()
-            ->assertRedirect();
+    $this->actingAs($user)
+        ->post('/settings', [
+        'phone_number' => '+33111111111'
+    ])->assertSessionDoesntHaveErrors()
+        ->assertRedirect();
 
-        $this->actingAs($user)
-            ->post('/settings', [
-            'phone_number' => '+33111111111'
-        ])->assertSessionDoesntHaveErrors()
-            ->assertRedirect();
+    $user->refresh();
 
-        $user->refresh();
+    expect($user->phone_number)->toEqual('+33111111111');
+});
 
-        $this->assertEquals('+33111111111', $user->phone_number);
-    }
+test('user can delete url', function () {
+    $user = User::find(1);
+    $this->actingAs($user);
 
-    public function test_user_can_delete_url()
-    {
-        $user = User::find(1);
-        $this->actingAs($user);
+    $urlCount = $user->probes()->count();
 
-        $urlCount = $user->probes()->count();
+    $response = $this->delete('/probes/1', [
+        'name' => 'myName',
+        'url' => 'https://my-url.com'
+    ]);
 
-        $response = $this->delete('/probes/1', [
-            'name' => 'myName',
-            'url' => 'https://my-url.com'
-        ]);
+    expect($user->probes()->count())->toEqual($urlCount - 1);
+    $response->assertRedirect();
+});
 
-        $this->assertEquals($urlCount - 1, $user->probes()->count());
-        $response->assertRedirect();
-    }
+test('index shows url list', function () {
+    $this->seed(\Database\Seeders\DatabaseSeeder::class);
 
-    public function test_index_shows_url_list()
-    {
-        $this->actingAs(User::find(1));
+    $this->actingAs(User::find(1));
 
-        $this->get('/probes')
-            ->assertSee('gooddomain.com');
-    }
-}
+    $this->get('/probes')
+        ->assertSee('gooddomain.com');
+});

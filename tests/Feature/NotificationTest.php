@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Jobs\CheckProbe;
 use App\Models\Check;
 use App\Models\Probe;
@@ -11,66 +9,52 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Tests\TestCase;
 
-class NotificationTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    protected $seed = true;
+test('up notification email', function () {
+    Event::fake([MessageSending::class]);
 
-    public function test_up_notification_email()
-    {
-        Event::fake([MessageSending::class]);
+    Http::fakeSequence()
+        ->push('success', 200);
 
-        Http::fake();
+    /** @var Probe $url */
+    $url = Probe::find(1);
 
-        /** @var Probe $url */
-        $url = Probe::find(1);
+    $badCheck = new Check();
+    $badCheck->status = 500;
+    $badCheck->online = 0;
+    $badCheck->created_at = '2021-05-05 13:37';
 
-        $goodCheck = new Check();
-        $goodCheck->status = 200;
-        $goodCheck->online = 1;
-        $goodCheck->created_at = '2021-05-05 13:37';
+    $url->checks()->saveMany([$badCheck]);
 
-        $badCheck = new Check();
-        $badCheck->status = 500;
-        $badCheck->online = 0;
-        $badCheck->created_at = Carbon::now()->subMinute();
+    CheckProbe::dispatch($url);
 
+    Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
+        return Str::contains($event->message->getHtmlBody(), 'is now up')
+            && Str::contains($event->message->getHtmlBody(), 'It was offline since 2021-05-05 13:37');
+    });
+});
 
-        $url->checks()->saveMany([$goodCheck, $badCheck]);
+test('down notification email', function () {
+    Event::fake([MessageSending::class]);
 
-        CheckProbe::dispatch($url);
+    Http::fakeSequence()
+        ->push('failure', 500);
 
-        Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
-            return Str::contains($event->message->getHtmlBody(), 'is now up')
-                && Str::contains($event->message->getHtmlBody(), 'It was offline since 2021-05-05 13:37');
-        });
-    }
+    /** @var Probe $url */
+    $url = Probe::find(1);
 
-    public function test_down_notification_email()
-    {
-        Event::fake([MessageSending::class]);
+    $goodCheck = new Check();
+    $goodCheck->status = 200;
+    $goodCheck->online = 1;
+    $goodCheck->created_at = Carbon::now()->subMinute();
 
-        Http::fake([
-            Http::response('failure', 500)
-        ]);
+    $url->checks()->save($goodCheck);
 
-        /** @var Probe $url */
-        $url = Probe::find(1);
+    CheckProbe::dispatch($url);
 
-        $goodCheck = new Check();
-        $goodCheck->status = 200;
-        $goodCheck->online = 1;
-        $goodCheck->created_at = Carbon::now()->subMinute();
-
-        $url->checks()->save($goodCheck);
-
-        CheckProbe::dispatch($url);
-
-        Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
-            return Str::contains($event->message->getHtmlBody(), 'is down');
-        });
-    }
-}
+    Event::assertDispatched(MessageSending::class, function (MessageSending $event) {
+        return Str::contains($event->message->getHtmlBody(), 'is down');
+    });
+});

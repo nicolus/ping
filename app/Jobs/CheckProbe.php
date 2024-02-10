@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CheckProbe implements ShouldQueue //, ShouldBeUnique
+class CheckProbe implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -36,8 +36,6 @@ class CheckProbe implements ShouldQueue //, ShouldBeUnique
      */
     public function handle(): void
     {
-        $check = $this->probe->makeCheck();
-
-        ProbeChecked::dispatch($check);
+        $this->probe->makeCheck();
     }
 }
