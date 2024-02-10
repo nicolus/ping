@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Http;
 
@@ -59,7 +60,7 @@ class Probe extends Model
                 'status' => $response->status(),
                 'time' => $time ?? null
             ]);
-        } catch (HttpResponseException|RequestException) {
+        } catch (HttpResponseException|RequestException|HttpClientException) {
             $check = $this->checks()->create([
                 'online' => false,
                 'status' => null,
