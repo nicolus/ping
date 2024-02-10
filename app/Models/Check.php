@@ -13,9 +13,7 @@ class Check extends Model
 
     const UPDATED_AT = null;
 
-    public $fillable = [
-        'status', 'time', 'online'
-    ];
+    public $guarded = ['id'];
 
     protected $casts = [
         'status' => 'int',

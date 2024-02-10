@@ -17,10 +17,7 @@ class Probe extends Model
 {
     use HasFactory;
 
-    public $fillable = [
-        'url',
-        'name'
-    ];
+    public $guarded = ['id'];
 
     public function user(): BelongsTo
     {
