@@ -45,11 +45,6 @@ class Probe extends Model
         return $this->latestCheck->wasOnline();
     }
 
-    public function isOffline(): bool
-    {
-        return !$this->isOnline();
-    }
-
     public function makeCheck(): void
     {
         try {

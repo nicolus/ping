@@ -15,22 +15,18 @@ uses(RefreshDatabase::class);
 test('up notification email', function () {
     Event::fake([MessageSending::class]);
 
-    Http::fake();
+    Http::fakeSequence()
+        ->push('success', 200);
 
     /** @var Probe $url */
     $url = Probe::find(1);
 
-    $goodCheck = new Check();
-    $goodCheck->status = 200;
-    $goodCheck->online = 1;
-    $goodCheck->created_at = '2021-05-05 13:37';
-
     $badCheck = new Check();
     $badCheck->status = 500;
     $badCheck->online = 0;
-    $badCheck->created_at = Carbon::now()->subMinute();
+    $badCheck->created_at = '2021-05-05 13:37';
 
-    $url->checks()->saveMany([$goodCheck, $badCheck]);
+    $url->checks()->saveMany([$badCheck]);
 
     CheckProbe::dispatch($url);
 
@@ -43,9 +39,8 @@ test('up notification email', function () {
 test('down notification email', function () {
     Event::fake([MessageSending::class]);
 
-    Http::fake([
-        Http::response('failure', 500)
-    ]);
+    Http::fakeSequence()
+        ->push('failure', 500);
 
     /** @var Probe $url */
     $url = Probe::find(1);

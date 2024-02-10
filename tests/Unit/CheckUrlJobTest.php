@@ -36,24 +36,19 @@ test('site goes offline', function () {
 
 test('site goes online', function () {
     Notification::fake();
-    Http::fake([
-        'gooddomain.com' => Http::sequence()
-            ->pushStatus(200)
-            ->pushStatus(400)
-            ->pushStatus(500)
-            ->pushStatus(200)
-    ]);
+    Http::fakeSequence()
+        ->pushStatus(200)
+        ->pushStatus(400)
+        ->pushStatus(500)
+        ->pushStatus(200);
 
     $probe = Probe::where('url', 'https://gooddomain.com')->first();
 
-    CheckProbe::dispatch($probe);
-    // 200 => nothing happens
+    CheckProbe::dispatch($probe); // 200 => nothing happens
     Notification::assertSentTo($probe->user, CheckNotification::class);
-    CheckProbe::dispatch($probe);
-    // 400 => site is now offline
-    CheckProbe::dispatch($probe);
-    // 500
-    CheckProbe::dispatch($probe);
-    // 200 again => notify that site is up again
+
+    CheckProbe::dispatch($probe); // 400 => site is now offline
+    CheckProbe::dispatch($probe); // 500
+    CheckProbe::dispatch($probe); // 200 again => notify that site is up again
     Notification::assertSentTo($probe->user, UpNotification::class);
 });

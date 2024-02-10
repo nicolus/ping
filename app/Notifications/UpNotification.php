@@ -62,7 +62,7 @@ class UpNotification extends Notification implements ShouldQueue
             ->greeting('Yay !')
             ->line("It looks like {$this->check->probe->name} is now up.")
             ->action('See for yourself', $this->check->probe->url)
-            ->line("It was offline since {$this->check->previousOnlineCheck()->created_at}");
+            ->line("It was offline since {$this->check->previousOfflineCheck()->created_at}");
     }
 
     /**
