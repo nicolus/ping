@@ -19,16 +19,25 @@ class Probe extends Model
 
     public $guarded = ['id'];
 
+    /**
+     * @return BelongsTo<User, Probe>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<Check>
+     */
     public function checks(): HasMany
     {
         return $this->hasMany(Check::class);
     }
 
+    /**
+     * @return HasOne<Check>
+     */
     public function latestCheck(): HasOne
     {
         return $this->checks()->one()->latestOfMany();
