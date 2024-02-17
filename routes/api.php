@@ -18,11 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/sanctum/token', AuthenticateMobileApp::class);
-
-Route::group(['middleware' => 'auth:sanctum'], function() {
-  Route::get('/urls', [ApiProbeController::class, 'index']);
-  Route::get('/urls/refresh', [ApiProbeController::class, 'refresh']);
-  Route::post('/user', [ApiUserController::class, 'update']);
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('/urls', [ApiProbeController::class, 'index']);
+    Route::get('/urls/refresh', [ApiProbeController::class, 'refresh']);
+    Route::post('/user', [ApiUserController::class, 'update']);
 });
 
 

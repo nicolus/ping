@@ -2,9 +2,11 @@
 
 namespace App\Notifications;
 
+use App\Http\Resources\ProbeResource;
 use App\Models\Check;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
@@ -36,11 +38,8 @@ class CheckNotification extends Notification implements ShouldQueue
 
     public function toBroadCast(mixed $notifiable): BroadcastMessage
     {
-        $status = $this->check->online ? 'online' : 'offline';
         return new BroadcastMessage([
-            'style' => 'info',
-            'title' => $this->check->probe->name . " checked",
-            'text' => "it is still $status and responded in " . $this->check->time . "ms",
+            'probe' => ProbeResource::make($this->check->probe->load('latestCheck')),
         ]);
     }
 }

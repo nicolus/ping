@@ -7,8 +7,9 @@
     "devDependencies": {
         "@erbelion/vite-plugin-laravel-purgecss": "^0.2.3",
         "@popperjs/core": "^2.11.8",
+        "alpinejs": "^3.13.5",
         "autoprefixer": "^10.4.15",
-        "axios": "^1.5.0",
+        "axios": "^1.6.7",
         "bootstrap": "^5.3.2",
         "bootstrap-icons": "^1.11.0",
         "laravel-echo": "^1.15.3",

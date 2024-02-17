@@ -17,11 +17,8 @@ class ProbeController extends Controller
 
     public function index(): Response
     {
-        $probes = auth()->user()->probes()->with('latestCheck')->get();
-
-        return response()->view('probes.index', ['probes' => $probes]);
+        return response()->view('probes.index');
     }
-
 
     public function store(StoreProbeRequest $request): RedirectResponse
     {
@@ -40,9 +37,9 @@ class ProbeController extends Controller
             ->with('success', __('Url successfully updated'));
     }
 
-    public function edit(Probe $probe)
+    public function edit(Probe $probe): Response
     {
-        return view('probes.edit', [
+        return response()->view('probes.edit', [
             'url' => $probe,
         ]);
     }

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CheckProbe;
-use App\Models\Check;
 use App\Models\Probe;
 use Illuminate\Console\Command;
 
@@ -30,7 +29,8 @@ class EnqueueProbeChecks extends Command
     public function handle(): void
     {
         foreach (Probe::all() as $uri) {
-            CheckProbe::dispatch($uri);
+            // Delay the job randomly to avoid pinging the server each minute on the clock
+            CheckProbe::dispatch($uri)->delay(now()->addSeconds(rand(1, 30)));
         }
     }
 }
