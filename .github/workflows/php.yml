@@ -51,7 +51,7 @@ jobs:
       run: npm run build
       
     - name: rsync deployment
-      uses: burnett01/rsync-deployments@6.0
+      uses: burnett01/rsync-deployments@6.0.0
       with:
         switches: -avzr --delete --exclude=".env" --exclude="node_modules/" --exclude="storage/" --exclude="bootstrap/cache/" --exclude=".git"
         path: /
