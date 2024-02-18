@@ -9,14 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
+    - name: Set platform as php 8.3 for dependencies
+      run: composer config platform.php 8.3
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -31,7 +34,7 @@ jobs:
       
     - name: Cache NPM packages
       id: npm-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         # npm cache files are stored in `~/.npm` on Linux/macOS
         path: ~/.npm
@@ -44,11 +47,11 @@ jobs:
     - name: Install NPM dependencies
       run: npm ci
 
-    - name: Run Laravel Mix
+    - name: Build frontend assets with Vite
       run: npm run build
       
     - name: rsync deployment
-      uses: burnett01/rsync-deployments@4.1
+      uses: burnett01/rsync-deployments@6.0
       with:
         switches: -avzr --delete --exclude=".env" --exclude="node_modules/" --exclude="storage/" --exclude="bootstrap/cache/" --exclude=".git"
         path: /
