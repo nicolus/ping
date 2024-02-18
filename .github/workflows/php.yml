@@ -11,11 +11,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set platform as php 8.3 for dependencies
-      run: composer config platform.php 8.3
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: none
 
-#    - name: Validate composer.json and composer.lock
-#      run: composer validate --strict
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
