@@ -11,33 +11,31 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        @vite('resources/sass/app.scss')
 
         <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        @vite('resources/js/app.js')
     </head>
-    <body class="font-sans antialiased bg-light">
+    <body class="font-sans antialiased">
         @auth()
             @include('layouts.navigation')
         @endauth
 
         <!-- Page Content -->
         <main class="container my-5">
-            @if(session('success'))
-                <div class="alert alert-success">{{session('success')}}</div>
-            @endif
-
-            @if(session('error'))
-                <div class="alert alert-danger">{{session('error')}}</div>
-            @endif
-
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    {{ implode(' ', $errors->all()) }}
-                </div>
-            @endif
-
+            <x-alert-message />
             {{ $slot }}
         </main>
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index: 11">
+            <template id="toast-template">
+                <div id="toasty" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                    </div>
+                    <div class="toast-body"></div>
+                </div>
+            </template>
+        </div>
+
     </body>
 </html>

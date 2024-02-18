@@ -2,49 +2,45 @@
 
 namespace App\Models;
 
+use App\Events\ProbeChecked;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Http;
 
-class Url extends Model
+class Probe extends Model
 {
     use HasFactory;
 
-    public $fillable = [
-        'url',
-        'name'
-    ];
+    public $guarded = ['id'];
 
+    /**
+     * @return BelongsTo<User, Probe>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<Check>
+     */
     public function checks(): HasMany
     {
         return $this->hasMany(Check::class);
     }
 
+    /**
+     * @return HasOne<Check>
+     */
     public function latestCheck(): HasOne
     {
-        return $this->hasOne(Check::class)->latestOfMany();
-    }
-
-    public function latestGoodCheck(): HasOne
-    {
-        return $this->hasOne(Check::class)->ofMany([
-            'id' => 'max',
-        ], function ($query) {
-            $query->where('online', '=', 1);
-        });
+        return $this->checks()->one()->latestOfMany();
     }
 
     public function isOnline(): bool
@@ -56,15 +52,7 @@ class Url extends Model
         return $this->latestCheck->wasOnline();
     }
 
-    public function isOffline(): bool
-    {
-        return !$this->isOnline();
-    }
-
-    /**
-     * @return Model|Check
-     */
-    public function makeCheck(): Check
+    public function makeCheck(): void
     {
         try {
             $response = Http::timeout(config('app.check_timeout'))->get($this->url);
@@ -73,16 +61,18 @@ class Url extends Model
                 $time = round($response->transferStats->getTransferTime() * 1000);
             }
 
-            return $this->checks()->create([
+            $check = $this->checks()->create([
                 'online' => $response->status() < 300,
                 'status' => $response->status(),
                 'time' => $time ?? null
             ]);
-        } catch (HttpResponseException|HttpClientException|RequestException) {
-            return $this->checks()->create([
+        } catch (HttpResponseException|RequestException|HttpClientException) {
+            $check = $this->checks()->create([
                 'online' => false,
                 'status' => null,
             ]);
         }
+
+        ProbeChecked::dispatch($check);
     }
 }

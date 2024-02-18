@@ -14,12 +14,12 @@
             <div class="mt-4 d-flex justify-content-around">
                 <form method="POST" action="">
                     @csrf
-                    <x-label for="code">TOTP code :</x-label>
+                    <label for="code">{{__('TOTP code')}} :</label>
                     <div class="input-group mb-3">
-                        <x-input type="text" name="code" id="code"></x-input>
-                        <x-button type="submit">
+                        <input type="text" name="code" id="code" class="form-control" />
+                        <button type="submit" class="btn btn-primary">
                             {{ __('Send') }}
-                        </x-button>
+                        </button>
                     </div>
                 </form>
             </div>

@@ -8,14 +8,12 @@ class CreateChecksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('url_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('probe_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('online');
             $table->smallInteger('status')->unsigned()->nullable();
             $table->smallInteger('time')->unsigned()->nullable();
@@ -25,10 +23,8 @@ class CreateChecksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('checks');
     }

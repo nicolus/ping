@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\CheckUrl;
-use App\Models\Url;
+use App\Jobs\CheckProbe;
+use App\Models\Probe;
 use Illuminate\Console\Command;
 
-class EnqueueUrlChecks extends Command
+class EnqueueProbeChecks extends Command
 {
     /**
      * The name and signature of the console command.
@@ -25,12 +25,12 @@ class EnqueueUrlChecks extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      */
-    public function handle()
+    public function handle(): void
     {
-        foreach (Url::all() as $uri) {
-            CheckUrl::dispatch($uri);
+        foreach (Probe::all() as $uri) {
+            // Delay the job randomly to avoid pinging the server each minute on the clock
+            CheckProbe::dispatch($uri)->delay(now()->addSeconds(rand(1, 30)));
         }
     }
 }

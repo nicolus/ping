@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUrlRequest extends FormRequest
+class StoreProbeRequest extends FormRequest
 {
-    public function rules()
+    public function rules(): array
     {
         return [
             'url' => ['url', 'required'],

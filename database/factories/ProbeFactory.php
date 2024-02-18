@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Url;
+use App\Models\Probe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UrlFactory extends Factory
+class ProbeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Url::class;
+    protected $model = Probe::class;
 
     /**
      * Define the model's default state.

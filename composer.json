@@ -9,34 +9,38 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "hedii/laravel-gelf-logger": "^7.1.0",
         "kreait/laravel-firebase": "^5.0.0",
         "laravel-notification-channels/fcm": "^3.0.0",
         "laravel/fortify": "^1.16.0",
-        "laravel/framework": "^9.51.0",
+        "laravel/framework": "^10.0",
         "laravel/horizon": "^5.14.1",
-        "laravel/vonage-notification-channel": "^3.2.0",
         "laravel/sanctum": "^3.2.1",
         "laravel/tinker": "^2.8",
-        "vonage/vonage-laravel": "^1.0.1",
+        "laravel/vonage-notification-channel": "^3.2.0",
+        "propaganistas/laravel-phone": "^5.0",
+        "pusher/pusher-php-server": "^7.2",
         "symfony/http-client": "^6.0",
         "symfony/sendinblue-mailer": "^6.0"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^1.6.4",
         "fakerphp/faker": "^1.9.1",
         "itsgoingd/clockwork": "^5.0",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.3.3"
+        "nunomaduro/collision": "^v7.8.11",
+        "phpstan/phpstan": "^1.10.57",
+        "larastan/larastan": "^2.0",
+        "pestphp/pest": "^v2.16.0",
+        "phpunit/phpunit": "^10.3.0",
+        "spatie/laravel-ignition": "^2.0.0"
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {

@@ -8,12 +8,10 @@ class CreateUrlsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('urls', function (Blueprint $table) {
+        Schema::create('probes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');;
             $table->string('name');
@@ -24,10 +22,8 @@ class CreateUrlsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('urls');
     }
