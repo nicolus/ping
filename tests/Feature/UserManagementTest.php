@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('can edit settings', function () {
-    $this->refreshDatabase();
     $user = User::find(1);
     $this->actingAs($user)
         ->get('/settings')

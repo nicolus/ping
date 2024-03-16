@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Events\ProbeChecked;
 use App\Models\Probe;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -14,6 +13,8 @@ use Illuminate\Queue\SerializesModels;
 class CheckProbe implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $uniqueFor = 600;
 
     /**
      * Create a new job instance.
