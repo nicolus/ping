@@ -20,14 +20,14 @@ class DatabaseSeeder extends Seeder
         User::factory(1)
             ->has(
                 Probe::factory()
-                    ->count(2)
+                    ->count(1000)
                     ->state(
                         new Sequence(
                             ['url' => 'https://gooddomain.com'],
                             ['url' => 'https://baddomain.com'],
                         )
                     )
-//                    ->has(Check::factory()->count(10))
+                    ->has(Check::factory()->count(1000))
             )
             ->create();
     }

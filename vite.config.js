@@ -15,4 +15,16 @@ export default defineConfig({
             templates: ['blade']
         }),
     ],
+    server: {
+        host: true,
+        port: 8443,
+        strictPort: true,
+        hmr: {
+            protocol: 'wss',
+            host: 'ping.test',
+            port: 8443,
+            strictPort: true,
+            timeout: 1000,
+        }
+    }
 });

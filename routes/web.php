@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', 'login');
+//Route::redirect('/', 'login');
 
 Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::resource('/probes', ProbeController::class);

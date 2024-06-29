@@ -17,14 +17,20 @@ class ProbeResource extends JsonResource
             'url' => $this->url,
             'name' => $this->name,
             'edit_link' => route('probes.edit', $this),
-            'latest_check' => $this->whenLoaded('latestCheck', function () {
-                return [
+            'latest_check' =>  [
                     'online' => $this->latestCheck->online,
                     'status' => $this->latestCheck->status,
                     'created_at' => $this->latestCheck->created_at,
                     'time' => $this->latestCheck->time,
-                ];
-            }),
+                ]
+//            'latest_check' => $this->whenLoaded('latestCheck', function () {
+//                return [
+//                    'online' => $this->latestCheck->online,
+//                    'status' => $this->latestCheck->status,
+//                    'created_at' => $this->latestCheck->created_at,
+//                    'time' => $this->latestCheck->time,
+//                ];
+//            }),
         ];
     }
 }

@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.0.1",
+        "hedii/laravel-gelf-logger": "^9.0",
         "kreait/laravel-firebase": "^5.0.0",
         "laravel-notification-channels/fcm": "^4.0.0",
         "laravel/fortify": "^1.16.0",
@@ -28,11 +29,9 @@
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "itsgoingd/clockwork": "^5.0",
-        "larastan/larastan": "^2.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^v8.1",
         "pestphp/pest": "^v2.16.0",
-        "phpstan/phpstan": "^1.10.57",
         "phpunit/phpunit": "^10.3.0",
         "spatie/laravel-ignition": "^2.0.0"
     },
