@@ -23,8 +23,7 @@ export default defineConfig({
             protocol: 'wss',
             host: 'ping.test',
             port: 8443,
-            strictPort: true,
-            timeout: 1000,
+            strictPort: true
         }
     }
 });

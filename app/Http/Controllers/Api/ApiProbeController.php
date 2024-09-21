@@ -14,7 +14,7 @@ class ApiProbeController extends Controller
     public function index(): JsonResponse
     {
         return ProbeResource::collection(
-            auth()->user()->probes()->with('latestCheck')->get()
+            auth()->user()->probes()->get()
         )->response();
     }
 
